@@ -1,9 +1,0 @@
-D:\_REPOS\Utileria\LanguageToClasses\bin\Debug\netcoreapp2.2\LanguageToClasses.deps.json
-D:\_REPOS\Utileria\LanguageToClasses\bin\Debug\netcoreapp2.2\LanguageToClasses.dll
-D:\_REPOS\Utileria\LanguageToClasses\bin\Debug\netcoreapp2.2\LanguageToClasses.pdb
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.csprojAssemblyReference.cache
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.csproj.CoreCompileInputs.cache
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.AssemblyInfoInputs.cache
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.AssemblyInfo.cs
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.dll
-D:\_REPOS\Utileria\LanguageToClasses\obj\Debug\netcoreapp2.2\LanguageToClasses.pdb
