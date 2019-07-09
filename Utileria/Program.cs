@@ -25,6 +25,8 @@ namespace Utileria
 	{
 		private static void Main(string[] args)
 		{
+			Console.WriteLine(string.Join("&", new List<string>() { }));
+
 			TestDeserialize();
 			//Console.WriteLine(GetException(new Exception("easdaea", new Exception("qqq"))));
 			string prueba = "asdasda<si";
