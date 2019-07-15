@@ -17,6 +17,7 @@ using LanguageToClasses.Models;
 using System.Globalization;
 using Utileria.ObjectUtils;
 using Utileria.Utils;
+using PCRE;
 
 namespace Utileria
 {
@@ -28,6 +29,12 @@ namespace Utileria
     {
         private static void Main(string[] args)
         {
+            PcreRegex document = new PcreRegex(LanguageToClasses.Models.Utils.Document, PcreOptions.IgnoreCase);
+
+            var file = File.ReadAllText("file");
+
+            Console.WriteLine(document.IsMatch(file));
+
             Console.WriteLine(MatrixGenerator.Generate(5, 5, CharType.Letters, false));
 
             TestDeserialize();
@@ -43,8 +50,8 @@ namespace Utileria
         }
 
         #region charGenerator
-        
-        #endregion 
+
+        #endregion
 
 
         private static void TestMail()

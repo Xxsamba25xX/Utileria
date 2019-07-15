@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utileria", "Utileria\Utileria.csproj", "{6B61BB08-3FC3-4FFB-BECC-EA442A89D851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter Window", "Converter Window\Converter Window.csproj", "{632BF3A1-7AE9-4805-B476-6105AFB1B5A5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageToClasses", "LanguageToClasses\LanguageToClasses.csproj", "{197E1F25-0F81-4753-8145-DBA93CAD87E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageToClasses", "LanguageToClasses\LanguageToClasses.csproj", "{197E1F25-0F81-4753-8145-DBA93CAD87E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{6B61BB08-3FC3-4FFB-BECC-EA442A89D851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B61BB08-3FC3-4FFB-BECC-EA442A89D851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B61BB08-3FC3-4FFB-BECC-EA442A89D851}.Release|Any CPU.Build.0 = Release|Any CPU
-		{632BF3A1-7AE9-4805-B476-6105AFB1B5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{632BF3A1-7AE9-4805-B476-6105AFB1B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{632BF3A1-7AE9-4805-B476-6105AFB1B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{632BF3A1-7AE9-4805-B476-6105AFB1B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{197E1F25-0F81-4753-8145-DBA93CAD87E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{197E1F25-0F81-4753-8145-DBA93CAD87E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{197E1F25-0F81-4753-8145-DBA93CAD87E5}.Release|Any CPU.ActiveCfg = Release|Any CPU

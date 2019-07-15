@@ -58,12 +58,5 @@
     <RoomCount>
       <![CDATA[]]>
     </RoomCount>
-    <Pictures>
-      <Picture Description="Reception">https://i.travelapi.com/hotels/2000000/1490000/1489400/1489325/1489325_43_b.jpg</Picture>
-      <Picture Description="Guestroom">https://i.travelapi.com/hotels/2000000/1490000/1489400/1489325/1489325_45_b.jpg</Picture>
-      <Picture Description="Guestroom">https://i.travelapi.com/hotels/2000000/1490000/1489400/1489325/1489325_46_b.jpg</Picture>
-      <Picture Description="Guestroom">https://i.travelapi.com/hotels/2000000/1490000/1489400/1489325/1489325_47_b.jpg</Picture>
-      <Picture Description="Breakfast Area">https://i.travelapi.com/hotels/2000000/1490000/1489400/1489325/1489325_44_b.jpg</Picture>
-    </Pictures>
   </Main>
 </Root>

@@ -1,0 +1,5 @@
+﻿Estado actual del proyecto.
+
+Trabajando sobre la clase XmlConverter:
+-Reconocimiento de tag inicial
+-Reconocimiento de basura
