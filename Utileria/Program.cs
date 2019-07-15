@@ -29,11 +29,19 @@ namespace Utileria
     {
         private static void Main(string[] args)
         {
-            PcreRegex document = new PcreRegex(LanguageToClasses.Models.Utils.Document, PcreOptions.IgnoreCase);
+            PcreRegex document = new PcreRegex(LanguageToClasses.Models.Utils.XmlDeclaration, PcreOptions.IgnoreCase);
 
             var file = File.ReadAllText("file");
 
-            Console.WriteLine(document.IsMatch(file));
+            var aux = document.Matches(file).ToList();
+
+            foreach (var match in aux)
+            {
+                foreach (var item in match.Groups)
+                {
+                    Console.WriteLine(item);
+                }
+            }
 
             Console.WriteLine(MatrixGenerator.Generate(5, 5, CharType.Letters, false));
 
@@ -45,7 +53,6 @@ namespace Utileria
 
             var matches = regex.Matches(prueba);
 
-            TestLanguageToClasses();
             TestMail();
         }
 
@@ -71,14 +78,6 @@ namespace Utileria
             message.Subject = "Boludeando con el cliente de mail";
             message.Body = "Hola bestia, como estas?<img src=\"C:\\Users\\Lautaro\\Pictures\\saldaa.jpg\">";
             mailClient.Send(message);
-        }
-
-        private static void TestLanguageToClasses()
-        {
-            string fileContent = File.ReadAllText("file");
-            var xmlConfiguration = JsonConvert.DeserializeObject<XmlConfiguration>(File.ReadAllText("xmlConfiguration"));
-            XmlConverter converter = new XmlConverter(xmlConfiguration);
-            converter.Convert(fileContent);
         }
 
         private static void TestDeserialize()

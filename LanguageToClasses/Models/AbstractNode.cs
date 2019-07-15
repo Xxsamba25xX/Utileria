@@ -8,7 +8,6 @@ namespace LanguageToClasses.Models
 	{
 		public AbstractNode Parent { get; set; } = null;
 		public string Name { get; set; } = "";
-		public string ValueType { get; set; } = "";
 		public List<AbstractNode> Childrens { get; set; } = new List<AbstractNode>();
 	}
 }

@@ -23,11 +23,22 @@ namespace LanguageToClasses.Converters
         /// </summary>
         /// <param name="source">texto del cual sacar el elemento procesado</param>
         /// <returns>source sin el elemento procesado</returns>
-        public string ProcessComment(string source)
+        public Status ProcessComment(Status status)
         {
-            Regex commentTag = new Regex($"^(?<isMatch>{Utils.Comment})?(?<rest>.*)", RegexOptions.IgnoreCase);
-            var match = commentTag.Match(source);
+            //De comment solo podríamos sacar content;
+            Regex matcher = new Regex($"^(?<isMatch>{Utils.Comment})?(?<rest>{Utils.Anything}*)", RegexOptions.IgnoreCase);
+            var match = matcher.Match(status.Source);
             var newSource = match.Groups["rest"].Value;
+            var node = match.Groups["isMatch"].Value;
+
+            XMLCommentNode result = new XMLCommentNode(status.ActualNode, match.Value);
+
+            if (!string.IsNullOrWhiteSpace(node))
+            {
+                matcher = new Regex($"{Utils.CommentContent}", RegexOptions.IgnoreCase);
+                match = matcher.Match(node);
+                result.Value = match.Value;
+            }
 
             ////Si se quiere hacer EventDriven, dejo esto.
             //if (newSource.Length < source.Length)
@@ -35,7 +46,8 @@ namespace LanguageToClasses.Converters
             //    //Es un comentario
             //}
 
-            return newSource;
+            status.ActualNode = result;
+            return status;
         }
 
         /// <summary>
@@ -43,19 +55,24 @@ namespace LanguageToClasses.Converters
         /// </summary>
         /// <param name="source">texto del cual sacar el elemento procesado</param>
         /// <returns>source sin el elemento procesado</returns>
-        public string ProcessXMLDeclaration(string source)
+        public Status ProcessXMLDeclaration(Status status)
         {
-            Regex commentTag = new Regex($"^(?<isMatch>{Utils.XmlDeclaration})?(?<rest>.*)", RegexOptions.IgnoreCase);
-            var match = commentTag.Match(source);
+            Regex matcher = new Regex($"^(?<isMatch>{Utils.XmlDeclaration})?(?<rest>.*)", RegexOptions.IgnoreCase);
+            var match = matcher.Match(status.Source);
             var newSource = match.Groups["rest"].Value;
-
+            var node = match.Groups["isMatch"].Value;
+            if (string.IsNullOrWhiteSpace(node))
+            {
+                //matcher = new Regex($"{Utils.}");
+            }
             ////Si se quiere hacer EventDriven, dejo esto.
             //if (newSource.Length < source.Length)
             //{
             //    //Es un comentario
             //}
 
-            return newSource;
+            //status.ActualNode = result;
+            return status;
         }
 
     }
