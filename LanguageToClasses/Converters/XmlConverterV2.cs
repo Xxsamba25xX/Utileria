@@ -26,27 +26,20 @@ namespace LanguageToClasses.Converters
         public Status ProcessComment(Status status)
         {
             //De comment solo podríamos sacar content;
-            Regex matcher = new Regex($"^(?<isMatch>{Utils.Comment})?(?<rest>{Utils.Anything}*)", RegexOptions.IgnoreCase);
+            Regex matcher = new Regex($"^(?<isMatch>{Utils.GroupedComment})?(?<rest>{Utils.Anything}*)", RegexOptions.IgnoreCase);
             var match = matcher.Match(status.Source);
             var newSource = match.Groups["rest"].Value;
             var node = match.Groups["isMatch"].Value;
 
-            XMLCommentNode result = new XMLCommentNode(status.ActualNode, match.Value);
-
             if (!string.IsNullOrWhiteSpace(node))
             {
-                matcher = new Regex($"{Utils.CommentContent}", RegexOptions.IgnoreCase);
-                match = matcher.Match(node);
-                result.Value = match.Value;
+                XMLCommentNode result = new XMLCommentNode(status.ActualNode, match.Value);
+
+                result.Value = match.Groups[nameof(Utils.CommentContent)].Value;
+
+                status.ActualNode = result;
             }
 
-            ////Si se quiere hacer EventDriven, dejo esto.
-            //if (newSource.Length < source.Length)
-            //{
-            //    //Es un comentario
-            //}
-
-            status.ActualNode = result;
             return status;
         }
 
@@ -57,23 +50,50 @@ namespace LanguageToClasses.Converters
         /// <returns>source sin el elemento procesado</returns>
         public Status ProcessXMLDeclaration(Status status)
         {
-            Regex matcher = new Regex($"^(?<isMatch>{Utils.XmlDeclaration})?(?<rest>.*)", RegexOptions.IgnoreCase);
+            Regex matcher = new Regex($"^(?<isMatch>{Utils.GroupedXmlDeclaration})?(?<rest>.*)", RegexOptions.IgnoreCase);
             var match = matcher.Match(status.Source);
             var newSource = match.Groups["rest"].Value;
             var node = match.Groups["isMatch"].Value;
+
             if (string.IsNullOrWhiteSpace(node))
             {
-                //matcher = new Regex($"{Utils.}");
-            }
-            ////Si se quiere hacer EventDriven, dejo esto.
-            //if (newSource.Length < source.Length)
-            //{
-            //    //Es un comentario
-            //}
+                XMLDeclarationNode result = new XMLDeclarationNode(status.ActualNode);
+                string fullVersion = match.Groups[nameof(Utils.VersionInfo)].Value;
+                string fullEncoding = match.Groups[nameof(Utils.EncodingDeclaration)].Value;
+                string fullStandalone = match.Groups[nameof(Utils.StandaloneDocumentDeclaration)].Value;
 
-            //status.ActualNode = result;
+                if (!string.IsNullOrWhiteSpace(fullVersion))
+                {
+                    matcher = new Regex($"{Utils.GroupedVersionInfo}", RegexOptions.IgnoreCase);
+                    result.Version = matcher.Match(fullVersion).Groups[nameof(Utils.versionNum)].Value;
+                    if (result.Version.Length >= 3)
+                        result.Version = result.Version.Substring(1, result.Version.Length - 2);
+                }
+                if (!string.IsNullOrWhiteSpace(fullEncoding))
+                {
+                    matcher = new Regex($"{Utils.GroupedEncodingDeclaration}", RegexOptions.IgnoreCase);
+                    result.EncodingName = matcher.Match(fullVersion).Groups[nameof(Utils.EncodingName)].Value;
+                    if (result.EncodingName.Length >= 3)
+                        result.EncodingName = result.EncodingName.Substring(1, result.EncodingName.Length - 2);
+                }
+                if (!string.IsNullOrWhiteSpace(fullStandalone))
+                {
+                    matcher = new Regex($"{Utils.GroupedVersionInfo}", RegexOptions.IgnoreCase);
+                    var standalone = matcher.Match(fullVersion).Groups[nameof(Utils.YesOrNo)].Value;
+                    if (standalone.Length >= 3)
+                        standalone = standalone.Substring(1, standalone.Length - 2);
+
+                    result.isStandAlone = standalone.Equals("yes", StringComparison.InvariantCultureIgnoreCase);
+                }
+
+
+                status.ActualNode = result;
+            }
+
             return status;
         }
+
+
 
     }
 }

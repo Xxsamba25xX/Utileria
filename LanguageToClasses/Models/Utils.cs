@@ -76,10 +76,6 @@ namespace LanguageToClasses.Models
         /// </summary>
         public static string charRef => $"(&#[0-9]+;)|(&#x[0-9a-fA-F];)";
         /// <summary>
-        /// Estructura para la info de version
-        /// </summary>
-        public static string versionInfo => $"({space}version{eq}('{versionNum}'|{'"'}{versionNum}{'"'}))";
-        /// <summary>
         /// Especificación para referencia
         /// </summary>
         public static string Reference => $"({entityRef}|{charRef})";
@@ -120,24 +116,32 @@ namespace LanguageToClasses.Models
         /// <summary>
         /// Especificación para las declaraciones xml (<?XML version="4.1" ?>)
         /// </summary>
-        public static string XmlDeclaration => $"((<[?](xml|XML))({versionInfo})({EncodingDeclaration})?({StandaloneDocumentDeclaration})?(({space})?[?]>))";
+        public static string XmlDeclaration => $"((<[?](xml|XML))({VersionInfo})({EncodingDeclaration})?({StandaloneDocumentDeclaration})?(({space})?[?]>))";
+        public static string GroupedXmlDeclaration => $"((<[?](xml|XML))(?<{nameof(VersionInfo)}>{VersionInfo})(?<{nameof(EncodingDeclaration)}>{EncodingDeclaration})?(?<{nameof(StandaloneDocumentDeclaration)}>{StandaloneDocumentDeclaration})?(({space})?[?]>))";
+        
         /// <summary>
         /// Información de la version (version="2.0")
         /// </summary>
         public static string VersionInfo => $"({space}version{eq}({sq}{versionNum}{sq}|{dq}{versionNum}{dq}))";
+        public static string GroupedVersionInfo => $"({space}version{eq}(?<{nameof(versionNum)}>{sq}{versionNum}{sq}|{dq}{versionNum}{dq}))";
+        
         /// <summary>
         /// Declaracion de la codificación (encoding="UTF-8")
         /// </summary>
         public static string EncodingDeclaration => $"({space}encoding{eq}({sq}{EncodingName}{sq}|{dq}{EncodingName}{dq}))";
-        /// <summary>
-        /// Declaracion de si el documento es standAlone (standalone="yes")
-        /// </summary>
-        public static string StandaloneDocumentDeclaration => $"({space}standalone{eq}({sq}{StandaloneDocumentDeclarationYesNo}{sq}|{dq}{StandaloneDocumentDeclarationYesNo}{dq}))";
-        public static string StandaloneDocumentDeclarationYesNo => $"(yes|no)";
+        public static string GroupedEncodingDeclaration => $"({space}encoding{eq}(?<{nameof(EncodingName)}>{sq}{EncodingName}{sq}|{dq}{EncodingName}{dq}))";
         /// <summary>
         /// Nombre de un codificador (UTF-8)
         /// </summary>
         public static string EncodingName => $"({letter}({letter}|{number}|[.]|{anyHyphen})*)";
+        
+        /// <summary>
+        /// Declaracion de si el documento es standAlone (standalone="yes")
+        /// </summary>
+        public static string StandaloneDocumentDeclaration => $"({space}standalone{eq}({sq}{YesOrNo}{sq}|{dq}{YesOrNo}{dq}))";
+        public static string GroupedStandaloneDocumentDeclaration => $"({space}standalone{eq}(?<{nameof(YesOrNo)}>{sq}{YesOrNo}{sq}|{dq}{YesOrNo}{dq}))";
+        public static string YesOrNo => $"(yes|no)";
+        
         #endregion
 
         #region Comment
@@ -145,8 +149,9 @@ namespace LanguageToClasses.Models
         /// Especificación para las etiquetas de comentarios (<?-- Hole tode bien? -->)
         /// </summary>
         public static string Comment => $"(<[!][-]{@"{2}"}{space}?{CommentContent}?{space}?[-]{@"{2}"}>)";
-        public static string CommentContent => $"({Anything}*?)";
+        public static string GroupedComment => $"(<[!][-]{@"{2}"}{space}?(?<CommentContent>{CommentContent})?{space}?[-]{@"{2}"}>)";
 
+        public static string CommentContent => $"({Anything}*?)";
         #endregion
 
         #region ProcessingInstruction
