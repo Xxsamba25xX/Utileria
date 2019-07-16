@@ -29,7 +29,7 @@ namespace Utileria
     {
         private static void Main(string[] args)
         {
-            PcreRegex document = new PcreRegex(LanguageToClasses.Models.Utils.XmlDeclaration, PcreOptions.IgnoreCase);
+            PcreRegex document = new PcreRegex(LanguageToClasses.Models.Utils.Element, PcreOptions.IgnoreCase);
 
             var file = File.ReadAllText("file");
 

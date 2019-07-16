@@ -12,6 +12,8 @@ namespace LanguageToClasses.Models
         public static string strAttributes = "attributes";
         public static string strQuoted = "quoted";
 
+        public static string strElementNameTag = "elementNameTagQueEsSecreto";
+
         /// <summary>
         /// Matchea cualquier tipo de los espacios comunes
         /// </summary>
@@ -118,13 +120,13 @@ namespace LanguageToClasses.Models
         /// </summary>
         public static string XmlDeclaration => $"((<[?](xml|XML))({VersionInfo})({EncodingDeclaration})?({StandaloneDocumentDeclaration})?(({space})?[?]>))";
         public static string GroupedXmlDeclaration => $"((<[?](xml|XML))(?<{nameof(VersionInfo)}>{VersionInfo})(?<{nameof(EncodingDeclaration)}>{EncodingDeclaration})?(?<{nameof(StandaloneDocumentDeclaration)}>{StandaloneDocumentDeclaration})?(({space})?[?]>))";
-        
+
         /// <summary>
         /// Información de la version (version="2.0")
         /// </summary>
         public static string VersionInfo => $"({space}version{eq}({sq}{versionNum}{sq}|{dq}{versionNum}{dq}))";
         public static string GroupedVersionInfo => $"({space}version{eq}(?<{nameof(versionNum)}>{sq}{versionNum}{sq}|{dq}{versionNum}{dq}))";
-        
+
         /// <summary>
         /// Declaracion de la codificación (encoding="UTF-8")
         /// </summary>
@@ -134,14 +136,14 @@ namespace LanguageToClasses.Models
         /// Nombre de un codificador (UTF-8)
         /// </summary>
         public static string EncodingName => $"({letter}({letter}|{number}|[.]|{anyHyphen})*)";
-        
+
         /// <summary>
         /// Declaracion de si el documento es standAlone (standalone="yes")
         /// </summary>
         public static string StandaloneDocumentDeclaration => $"({space}standalone{eq}({sq}{YesOrNo}{sq}|{dq}{YesOrNo}{dq}))";
         public static string GroupedStandaloneDocumentDeclaration => $"({space}standalone{eq}(?<{nameof(YesOrNo)}>{sq}{YesOrNo}{sq}|{dq}{YesOrNo}{dq}))";
         public static string YesOrNo => $"(yes|no)";
-        
+
         #endregion
 
         #region Comment
@@ -165,7 +167,10 @@ namespace LanguageToClasses.Models
         /// <summary>
         /// Especificación para las etiquetas de CDATA (<![CDATA[<p>tu vieja en tanga</p>]]>)
         /// </summary>
-        public static string CDATA => $"(<!{@"\["}CDATA{@"\["}.*?{@"\]"}{@"\]>"})";
+        public static string CDATA => $"(<!{@"\["}CDATA{@"\["}({CDATAContent}){@"\]"}{@"\]>"})";
+        public static string GroupedCDATA => $"(<!{@"\["}CDATA{@"\["}(?<{nameof(CDATAContent)}>{CDATAContent}){@"\]"}{@"\]>"})";
+
+        public static string CDATAContent => $"({Anything}*?)";
         #endregion
 
         #region DocumentTypeDeclaration
@@ -218,7 +223,7 @@ namespace LanguageToClasses.Models
         /// <summary>
         /// Especificación para las etiquetas de Elementos
         /// </summary>
-        public static string Element => $"(?<element>({EmptyElementTag}|{STag}{Content}{ETag}))";
+        public static string Element => $"(?<{strElementNameTag}>({EmptyElementTag}|{STag}{Content}{ETag}))";
         public static string EmptyElementTag => $"(<{qualifiedName}(({space}{attribute})*){space}?/>)";
         public static string STag => $"(<{qualifiedName}(({space}{attribute})*){space}?>)";
         public static string ETag => $"(</{qualifiedName}{space}?>)";
@@ -226,7 +231,7 @@ namespace LanguageToClasses.Models
         public static string attribute => $"({NSAttName}{eq}{attValue}|{qualifiedName}{eq}{attValue})";
         public static string NSAttName => $"({prefixedAttName}|{defaultAttName})";
         public static string attValue => $"({'"'}([^<&{'"'}]|{Reference})*{'"'}|{"'"}([^<&{"'"}]|{Reference})*{"'"})";
-        public static object Content => $"({charData}?(({@"\g<element>"}|{Reference}|{CDATA}|{PI}|{Comment}){charData}?)*)";
+        public static object Content => $"({charData}?(({@"\g<" + strElementNameTag + ">"}|{Reference}|{CDATA}|{PI}|{Comment}){charData}?)*)";
 
         #endregion
 
