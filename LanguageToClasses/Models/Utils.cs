@@ -81,14 +81,7 @@ namespace LanguageToClasses.Models
         /// Especificación para referencia
         /// </summary>
         public static string Reference => $"({entityRef}|{charRef})";
-        /// <summary>
-        /// Especificación nombres de atributos prefijados
-        /// </summary>
-        public static string prefixedAttName => $"(xmlns:{normalizedName})";
-        /// <summary>
-        /// Especificación espacio de nombres por defectos
-        /// </summary>
-        public static string defaultAttName => $"(xmlns)";
+        
         /// <summary>
         /// Especificación para cualquier atributo que tenga relación con los espacios de nombres
         /// </summary>
@@ -224,12 +217,23 @@ namespace LanguageToClasses.Models
         /// Especificación para las etiquetas de Elementos
         /// </summary>
         public static string Element => $"(?<{strElementNameTag}>({EmptyElementTag}|{STag}{Content}{ETag}))";
-        public static string EmptyElementTag => $"(<{qualifiedName}(({space}{attribute})*){space}?/>)";
-        public static string STag => $"(<{qualifiedName}(({space}{attribute})*){space}?>)";
-        public static string ETag => $"(</{qualifiedName}{space}?>)";
+        public static string GroupedElement => $"(?<{strElementNameTag}>((?<{nameof(EmptyElementTag)}>{EmptyElementTag})|(?<{nameof(STag)}>{STag})(?<{nameof(Content)}>{Content})(?<{nameof(ETag)}>{ETag})))";
+
+        public static string EmptyElementTag => $"(<({EmptyElementTagName})({EmptyElementTagAttributes}){space}?\\/>)";
+        public static string EmptyElementTagName => $"({qualifiedName})";
+        public static string EmptyElementTagAttributes => $"(({space}{attribute})*)";
+
+        public static string STag => $"(<({STagName})({STagAttributes}){space}?>)";
+        public static string STagName => $"({qualifiedName})";
+        public static string STagAttributes => $"(({space}{attribute})*)";
+
+        public static string ETag => $"(<\\/({ETagName}){space}?>)";
+        public static string ETagName => $"({qualifiedName})";
 
         public static string attribute => $"({NSAttName}{eq}{attValue}|{qualifiedName}{eq}{attValue})";
         public static string NSAttName => $"({prefixedAttName}|{defaultAttName})";
+        public static string prefixedAttName => $"(xmlns:{normalizedName})";
+        public static string defaultAttName => $"(xmlns)";
         public static string attValue => $"({'"'}([^<&{'"'}]|{Reference})*{'"'}|{"'"}([^<&{"'"}]|{Reference})*{"'"})";
         public static object Content => $"({charData}?(({@"\g<" + strElementNameTag + ">"}|{Reference}|{CDATA}|{PI}|{Comment}){charData}?)*)";
 

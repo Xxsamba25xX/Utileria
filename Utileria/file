@@ -1,47 +1,12 @@
-﻿<?xml version="1.0" standalone="no" ?>
-<!--define the location of the
-  external DTD using a relative URL address-->
-<!DOCTYPE document [
-  <!ELEMENT document
-  (title*,subjectID,subjectname,prerequisite?,
-  classes,assessment,syllabus,textbooks*)>
-  <!ELEMENT prerequisite (subjectID,subjectname)>
-  <!ELEMENT textbooks (author,booktitle)>
-  <!ELEMENT title (#PCDATA)>
-  <!ELEMENT subjectID (#PCDATA)>
-  <!ELEMENT subjectname (#PCDATA)>
-  <!ELEMENT classes (#PCDATA)>
-  <!ELEMENT assessment (#PCDATA)>
-  <!ATTLIST assessment assessment_type (exam | assignment) #IMPLIED>
-  <!ELEMENT syllabus (#PCDATA)>
-  <!ELEMENT author (#PCDATA)>
-  <!ELEMENT booktitle (#PCDATA)>]>
-
-<document>
-  <title>Subjects available in Mechanical Engineering.</title>
-  <subjectID>2.303</subjectID>
-  <subjectname>Fluid Mechanics</subjectname>
-  <prerequisite>
-    <subjectID>1.001</subjectID>
-    <subjectname>Mathematics</subjectname>
-  </prerequisite>
-  <classes>
-    4 hours per week (lectures and tutorials) for one
-    semester.
-  </classes>
-  <assessment>
-    tutorial assignments and one 2hr exam at end of
-    course.
-  </assessment>
-  <syllabus>
-    Fluid statics. The Bernoulli equation. Energy equation. Momentum
-    equation. Differential Continuity equation. Differential Energy
-    equation. Differential Momentum equation. Dimensional Analysis.
-    Similitude. Laminar flow. Turbulent flow. Lift and Drag. Boundary
-    layer theory.
-  </syllabus>
-  <textbooks>
-    <author>Foobar</author>
-    <booktitle>The Study of Fluid Mechanics</booktitle>
-  </textbooks>
-</document>
+﻿<cliente xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://es.wikipedia.org/wiki/Espacio_de_nombres_XML/cliente">
+  <numero_ID p4:tubi="10" xmlns:p4="http://es.wikipedia.org/wiki/Espacio_de_nombres_XML/pedido">12</numero_ID>
+  <telefono>0</telefono>
+  <a> </a>
+  <s>
+  </s>
+  <d />
+  <f />
+  <f />
+  <q>1</q>
+  <q>2</q>
+</cliente>

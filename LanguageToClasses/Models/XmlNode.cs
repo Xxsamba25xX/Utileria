@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LanguageToClasses.Models
 {
-	public class XmlNode : AbstractNode
+	public class XmlNodeExt : AbstractNode
 	{
 		public string Namespace { get; set; } = "";
 		public List<XmlAttribute> Attributes { get; set; } = new List<XmlAttribute>();
