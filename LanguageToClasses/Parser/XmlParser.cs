@@ -117,11 +117,10 @@ namespace LanguageToClasses.Parser
 			double doubleValue = 0;
 			float floatValue = 0;
 
-			DateTime datetimeValue = DateTime.MinValue;
-			string stringValue = "";
-			char charValue = '0';
-			bool boolValue = false;
-			string resultType = "";
+            DateTime datetimeValue = DateTime.MinValue;
+            char charValue = '0';
+            bool boolValue = false;
+            string resultType = "";
 
 
 			if (Regex.IsMatch(source, $"^[0-9]+?[{CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator}][0-9]+$", RegexOptions.IgnoreCase))
