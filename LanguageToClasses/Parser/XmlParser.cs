@@ -309,6 +309,7 @@ public static class XmlNodeUtils
 			return $"{me.NamespaceURI}:{me.Name}";
 	}
 
+
 	public static bool IsLeafNode(this XmlNode me)
 	{
 		bool isFirstNode = me.ParentNode.NodeType == XmlNodeType.Document;
