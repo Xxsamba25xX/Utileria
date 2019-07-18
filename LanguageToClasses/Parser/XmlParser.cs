@@ -78,7 +78,6 @@ namespace LanguageToClasses.Parser
             float floatValue = 0;
 
             DateTime datetimeValue = DateTime.MinValue;
-            string stringValue = "";
             char charValue = '0';
             bool boolValue = false;
             string resultType = "";
@@ -253,7 +252,7 @@ public static class XmlNodeUtils
         return nodes;
     }
 }
-}
+
 
 
 
