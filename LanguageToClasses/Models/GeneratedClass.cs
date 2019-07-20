@@ -4,21 +4,52 @@ using System.Text;
 
 namespace LanguageToClasses.Models
 {
-	public class GeneratedClass
+	public abstract class GeneratedElement
 	{
-		public Dictionary<string, GeneratedProperty> properties { get; set; }
-		public Dictionary<string, GeneratedProperty> attributes { get; set; }
-
-		public string Name { get; set; }
+		protected string name = "";
+		public string Name
+		{
+			get
+			{
+				return name;
+			}
+			set
+			{
+				name = value;
+				ShowName = value;
+			}
+		}
 		public string Namespace { get; set; }
 		public bool isArray { get; set; }
+		public string ShowName { get; set; }
 	}
 
-	public class GeneratedProperty
+
+	public class GeneratedClass : GeneratedElement
 	{
-		public string Name { get; set; } = "Value";
-		public string NameSpace { get; set; } = "";
+		public Dictionary<string, GeneratedProperty> Properties { get; set; } = new Dictionary<string, GeneratedProperty>();
+		public Dictionary<string, GeneratedAttribute> Attributes { get; set; } = new Dictionary<string, GeneratedAttribute>();
+		public Dictionary<string, GeneratedClass> Childs { get; set; } = new Dictionary<string, GeneratedClass>();
+	}
+
+	public class GeneratedProperty : GeneratedElement
+	{
+		public GeneratedProperty()
+		{
+			Name = "Value";
+			Namespace = "";
+		}
+
 		public string ValueType { get; set; } = "object";
-		public bool isArray { get; set; } = false;
+	}
+
+	public class GeneratedAttribute : GeneratedElement
+	{
+		public GeneratedAttribute()
+		{
+			Name = "Value";
+			Namespace = "";
+		}
+		public string ValueType { get; set; } = "object";
 	}
 }
