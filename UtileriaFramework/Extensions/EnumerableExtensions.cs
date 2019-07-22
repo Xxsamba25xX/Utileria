@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Utileria.Extensions
+namespace UtileriaFramework.Extensions
 {
     public static class EnumerableExtensions
     {
-
         public static void Shuffle<T>(this IList<T> me)
         {
             Random rnd = new Random();
@@ -38,6 +37,19 @@ namespace Utileria.Extensions
             sb.Remove(sb.Length - 1, 1);
 
             return sb.ToString();
+        }
+        public static bool TryPop<T>(this Stack<T> me, out T stackedElement)
+        {
+            if (me.Count > 0)
+            {
+                stackedElement = me.Pop();
+                return true;
+            }
+            else
+            {
+                stackedElement = default;
+                return false;
+            }
         }
 
         public static LinkedListNode<T> AddFirst<T>(this LinkedList<T> me, IEnumerable<T> elements)

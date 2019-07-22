@@ -1,0 +1,11 @@
+﻿
+{
+  "IgnoredAttributeTags": [
+    "http:asda.com:id"
+  ],
+	"ClassDecorators": [],
+	"UsedIntegralTypes": 255,
+	"UsedFloatingTypes": 7,
+	"UsedSpecialTypes": 7,
+	"UseFullProperties": false
+}

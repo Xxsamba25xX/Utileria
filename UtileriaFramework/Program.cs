@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Serializers;
+﻿using Serializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,15 +8,14 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utileria.Contracts;
-using Utileria.Extensions;
+using UtileriaFramework.Contracts;
+using UtileriaFramework.Extensions;
 using System.Globalization;
-using Utileria.ObjectUtils;
-using Utileria.Utils;
-using PCRE;
+using UtileriaFramework.ObjectUtils;
+using UtileriaFramework.Utils;
 using System.Xml;
 
-namespace Utileria
+namespace UtileriaFramework
 {
 
 	internal class Program

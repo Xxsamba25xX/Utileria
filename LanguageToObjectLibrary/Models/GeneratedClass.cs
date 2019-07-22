@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageToClasses.Models
+namespace LanguageToObjectLibrary.Models
 {
     public abstract class GeneratedElement
     {

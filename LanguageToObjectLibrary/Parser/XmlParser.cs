@@ -1,9 +1,9 @@
-﻿using LanguageToClasses.Configuration;
-using LanguageToClasses.Models;
+﻿using LanguageToObjectLibrary.Configuration;
+using LanguageToObjectLibrary.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
-using Utileria.Extensions;
+using UtileriaFramework.Extensions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace LanguageToClasses.Parser
+namespace LanguageToObjectLibrary.Parser
 {
 
     public class XmlParser

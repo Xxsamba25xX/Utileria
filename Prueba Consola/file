@@ -4,11 +4,11 @@
     <Title> Oracle Web Feature Service </Title>
     <Abstract> Web Feature Service maintained by Oracle </Abstract>
     <OnlineResource>http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet</OnlineResource>
-   <DCPType>
-          <HTTP>
-            <Get onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet"/>
-          </HTTP>
-        </DCPType>
+    <DCPType>
+      <HTTP>
+        <Get onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet"/>
+      </HTTP>
+    </DCPType>
   </Service>
   <Capability>
     <Request>
@@ -70,54 +70,4 @@
       </LockFeature>
     </Request>
   </Capability>
-  <FeatureTypeList>
-    <Operations>
-      <Insert/>
-      <Update/>
-      <Delete/>
-      <Query/>
-      <Lock/>
-    </Operations>
-  <FeatureType xmlns:myns="http://www.example.com/myns">
-  <Name> myns:COLA</Name>
-  <Title> LIST OF COLA MARKETS </Title>
-  <SRS> SDO:8307</SRS>
-</FeatureType><FeatureType xmlns:myns="http://www.example.com/myns">
-  <Name> myns:COLAVIEW1 </Name>
-  <Title> LIST OF COLA MARKET VIEW </Title>
-  <SRS> SDO:8307</SRS>
-</FeatureType><FeatureType xmlns:wfs="http://www.opengis.net/wfs"> 
-  <Name xmlns:myns="http://www.example.com/myns1">myns:SampleFeature</Name>
-  <Title>SAMPLE FEATURE</Title>
-  <SRS>EPSG:32615</SRS>
-</FeatureType></FeatureTypeList>
-  <ogc:Filter_Capabilities xmlns:ogc="http://www.opengis.net/ogc">
-    <ogc:Spatial_Capabilities>
-      <ogc:Spatial_Operators>
-        <ogc:BBOX/>
-        <ogc:Equals/>
-        <ogc:Disjoint/>
-        <ogc:Intersect/>
-        <ogc:Touches/>
-        <ogc:Crosses/>
-        <ogc:Within/>
-        <ogc:Contains/>
-        <ogc:Overlaps/>
-        <ogc:Beyond/>
-        <ogc:DWithin/>
-      </ogc:Spatial_Operators>
-    </ogc:Spatial_Capabilities>
-    <ogc:Scalar_Capabilities>
-      <ogc:Logical_Operators/>
-      <ogc:Comparison_Operators>
-        <ogc:Simple_Comparisons/>
-        <ogc:Like/>
-        <ogc:Between/>
-        <ogc:NullCheck/>
-      </ogc:Comparison_Operators>
-      <ogc:Arithmetic_Operators>
-        <ogc:Simple_Arithmetic/>
-      </ogc:Arithmetic_Operators>
-    </ogc:Scalar_Capabilities>
-  </ogc:Filter_Capabilities>
 </WFS_Capabilities>

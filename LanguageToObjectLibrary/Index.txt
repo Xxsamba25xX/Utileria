@@ -1,0 +1,12 @@
+﻿Estado actual del proyecto.
+
+Trabajando sobre la clase XmlConverterV2:
+-Reconocimiento de tag inicial
+-Reconocimiento de basura
+
+-Nodos por reconocer
+	-CDATA
+	-Element
+	-PI
+	-Document
+	-DocumentTypeDeclaration
