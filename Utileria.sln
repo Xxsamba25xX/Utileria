@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageToObjectLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtileriaFramework", "UtileriaFramework\UtileriaFramework.csproj", "{EB6ACF83-3D5D-4460-9143-EA5F63B13840}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasteAsXML_new", "PasteAsXML_new\PasteAsXML_new.csproj", "{D194892B-1AC4-406D-9917-328F723CEF36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasteXmlV2", "PasteXmlV2\PasteXmlV2.csproj", "{745CE051-E8CE-41B2-B263-79F51FCC5BA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +32,10 @@ Global
 		{EB6ACF83-3D5D-4460-9143-EA5F63B13840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6ACF83-3D5D-4460-9143-EA5F63B13840}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6ACF83-3D5D-4460-9143-EA5F63B13840}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D194892B-1AC4-406D-9917-328F723CEF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D194892B-1AC4-406D-9917-328F723CEF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D194892B-1AC4-406D-9917-328F723CEF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D194892B-1AC4-406D-9917-328F723CEF36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{745CE051-E8CE-41B2-B263-79F51FCC5BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{745CE051-E8CE-41B2-B263-79F51FCC5BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{745CE051-E8CE-41B2-B263-79F51FCC5BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{745CE051-E8CE-41B2-B263-79F51FCC5BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

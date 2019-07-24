@@ -22,7 +22,7 @@
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
-  <Commands package="guidPasteAsXML_newPackage">
+  <Commands package="guidPasteXmlV2Package">
     <!-- Inside this section we have different sub-sections: one for the menus, another
     for the menu groups, one for the buttons (the actual commands), one for the combos
     and the last one for the bitmaps used. Each element is identified by a command id that
@@ -31,15 +31,35 @@
     group; your package should define its own command set in order to avoid collisions
     with command ids defined by other packages. -->
 
+    <Menus>
+      <Menu guid="guidPasteXmlV2PackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
+        <Parent guid="guidSHLMainMenu"
+                id="IDG_VS_MM_TOOLSADDINS" />
+        <Strings>
+          <ButtonText>TestMenu</ButtonText>
+          <CommandName>TestMenu</CommandName>
+        </Strings>
+      </Menu>
+      <Menu guid="guidPasteXmlV2PackageCmdSet" id="SubMenu" priority="0x800" type="Menu">
+        <Parent guid="guidPasteXmlV2PackageCmdSet"
+                id="TopLevelMenu" />
+        <Strings>
+          <ButtonText>subMenu</ButtonText>
+          <CommandName>subMenu</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+    
     <!-- In this section you can define new menu groups. A menu group is a container for
          other menus or buttons (commands); from a visual point of view you can see the
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidPasteAsXML_newPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      <Group guid="guidPasteXmlV2PackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidPasteXmlV2PackageCmdSet" id="TopLevelMenu"/>
       </Group>
     </Groups>
+
 
     <!--Buttons section. -->
     <!--This section defines the elements the user can interact with, like a menu command or a button
@@ -52,11 +72,11 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidPasteAsXML_newPackageCmdSet" id="Command1Id" priority="0x0100" type="Button">
-        <Parent guid="guidPasteAsXML_newPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidPasteXmlV2PackageCmdSet" id="CommandId" priority="0x0100" type="Button">
+        <Parent guid="guidPasteXmlV2PackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke Command1</ButtonText>
+          <ButtonText>Say Hello World!</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -68,21 +88,23 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\Command1.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="guidImages" href="Resources\Command.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
     </Bitmaps>
   </Commands>
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidPasteAsXML_newPackage" value="{c31bf8f6-bf46-4f77-a56c-b285ab578974}" />
+    <GuidSymbol name="guidPasteXmlV2Package" value="{304a7894-b0c6-41f1-8f63-8431ed293678}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidPasteAsXML_newPackageCmdSet" value="{bda8a19a-07c7-47db-bc25-9870edf2f054}">
+    <GuidSymbol name="guidPasteXmlV2PackageCmdSet" value="{5b621d92-a563-4438-a869-02f9c8771179}">
+      <IDSymbol name="TopLevelMenu" value="0x1021"/>
+      <IDSymbol name="SubMenu" value="0x1022"/>
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="Command1Id" value="0x0100" />
+      <IDSymbol name="CommandId" value="0x0100" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="{3cfa8fd5-b581-496b-9044-434d58231d23}" >
+    <GuidSymbol name="guidImages" value="{6deb7186-63bf-4204-8585-a10c84f4d60b}" >
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />
