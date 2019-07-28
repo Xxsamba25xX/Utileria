@@ -92,6 +92,7 @@ namespace PasteXmlV2
 			string message = "Hello World";
 			string title = "Command";
 
+
 			// Show a message box to prove we were here
 			VsShellUtilities.ShowMessageBox(
 				 this.package,
