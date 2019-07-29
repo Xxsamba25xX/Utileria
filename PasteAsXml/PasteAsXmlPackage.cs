@@ -2,9 +2,10 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace PasteXmlV2
+namespace PasteAsXml
 {
 	/// <summary>
 	/// This is the class that implements the package exposed by this assembly.
@@ -24,14 +25,16 @@ namespace PasteXmlV2
 	/// </para>
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-	[Guid(PasteXmlV2Package.PackageGuidString)]
+	[Guid(PasteAsXmlPackage.PackageGuidString)]
 	[ProvideMenuResource("Menus.ctmenu", 1)]
-	public sealed class PasteXmlV2Package : AsyncPackage
+	[ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+	[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+	public sealed class PasteAsXmlPackage : AsyncPackage
 	{
 		/// <summary>
-		/// PasteXmlV2Package GUID string.
+		/// PasteAsXmlPackage GUID string.
 		/// </summary>
-		public const string PackageGuidString = "304a7894-b0c6-41f1-8f63-8431ed293678";
+		public const string PackageGuidString = "8f9262a3-b1f5-4381-9f48-dc9445813c8a";
 
 		#region Package Members
 
@@ -47,7 +50,7 @@ namespace PasteXmlV2
 			// When initialized asynchronously, the current thread may be a background thread at this point.
 			// Do any initialization that requires the UI thread after switching to the UI thread.
 			await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-		    await Command.InitializeAsync(this);
+		    await CommandGroup.InitializeAsync(this);
 		}
 
 		#endregion

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EB6ACF83-3D5D-4460-9143-EA5F63B13840}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UtileriaFramework</RootNamespace>
     <AssemblyName>UtileriaFramework</AssemblyName>
@@ -30,7 +30,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\Classes.Generated.cs" />
-    <Compile Include="Contracts\Tuvieja.cs" />
+    <Compile Include="Contracts\Json\Json.Generated.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="ObjectUtils\CharUtils.cs" />
     <Compile Include="Program.cs" />
@@ -54,6 +60,10 @@
     <None Include="file">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="fileJson">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="xmlConfiguration">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

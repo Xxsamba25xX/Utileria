@@ -8,12 +8,14 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using UtileriaFramework.Contracts;
+using CangoorooHotelProvider.XMLHelpers.Generated;
 using UtileriaFramework.Extensions;
 using System.Globalization;
 using UtileriaFramework.ObjectUtils;
 using UtileriaFramework.Utils;
 using System.Xml;
+using Newtonsoft.Json;
+using UtileriaFramework.Contracts.Json;
 
 namespace UtileriaFramework
 {
@@ -25,9 +27,8 @@ namespace UtileriaFramework
 			
 
 			
-			Console.WriteLine(MatrixGenerator.Generate(5, 5, CharType.Letters, false));
 
-			TestDeserialize();
+			TestDeserializeJson();
 			//Console.WriteLine(GetException(new Exception("easdaea", new Exception("qqq"))));
 			string prueba = "asdasda<si";
 
@@ -66,7 +67,14 @@ namespace UtileriaFramework
 		{
 			var file = File.ReadAllText("file");
 			var serializator = new XmlSerializer();
-			var deserialized = serializator.DeserializeObject<GetHotelInfoResponse>(file);
+			var deserialized = serializator.DeserializeObject<Envelope>(file);
+			Console.WriteLine("Se deserializó");
+		}
+
+		private static void TestDeserializeJson()
+		{
+			var file = File.ReadAllText("fileJson");
+			var deserialized = JsonConvert.DeserializeObject<Rootobject>(file);
 			Console.WriteLine("Se deserializó");
 		}
 

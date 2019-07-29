@@ -1,0 +1,23 @@
+﻿
+{
+	"postpaid":
+	{
+		"source_currency": "USD",
+		"source_total": 60,
+		"display_currency": "USD",
+		"display_total": 60,
+		"breakdown":
+		{
+			"fee_0":
+			{
+				"type": "Resort Fee",
+				"is_prepaid": 0,
+				"description": "$20 USD per room per night",
+				"source_currency": "USD",
+				"source_total": 60,
+				"display_currency": "USD",
+				"display_total": 60
+			}
+		}
+	}
+}

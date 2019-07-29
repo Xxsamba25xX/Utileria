@@ -1,123 +1,204 @@
-﻿<WFS_Capabilities xmlns="http://www.opengis.net/wfs" version="1.0.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:myns="http://www.example.com/myns">
-  <Service>
-    <Name> Oracle WFS </Name>
-    <Title> Oracle Web Feature Service </Title>
-    <Abstract> Web Feature Service maintained by Oracle </Abstract>
-    <OnlineResource>http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet</OnlineResource>
-   <DCPType>
-          <HTTP>
-            <Get onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet"/>
-          </HTTP>
-        </DCPType>
-  </Service>
-  <Capability>
-    <Request>
-      <GetCapabilities>
-        <DCPType>
-          <HTTP>
-            <Get onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/wfsservlet"/>
-          </HTTP>
-        </DCPType>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </GetCapabilities>
-      <DescribeFeatureType>
-        <SchemaDescriptionLanguage>
-          <XMLSCHEMA/>
-        </SchemaDescriptionLanguage>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </DescribeFeatureType>
-      <GetFeature>
-        <ResultFormat>
-          <GML2/>
-        </ResultFormat>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </GetFeature>
-      <GetFeatureWithLock>
-        <ResultFormat>
-          <GML2/>
-        </ResultFormat>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </GetFeatureWithLock>
-      <Transaction>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </Transaction>
-      <LockFeature>
-        <DCPType>
-          <HTTP>
-            <Post onlineResource="http://localhost:8888/SpatialWS-SpatialWS-context-root/SpatialWSSoapHttpPort"/>
-          </HTTP>
-        </DCPType>
-      </LockFeature>
-    </Request>
-  </Capability>
-  <FeatureTypeList>
-    <Operations>
-      <Insert/>
-      <Update/>
-      <Delete/>
-      <Query/>
-      <Lock/>
-    </Operations>
-  <FeatureType xmlns:myns="http://www.example.com/myns">
-  <Name> myns:COLA</Name>
-  <Title> LIST OF COLA MARKETS </Title>
-  <SRS> SDO:8307</SRS>
-</FeatureType><FeatureType xmlns:myns="http://www.example.com/myns">
-  <Name> myns:COLAVIEW1 </Name>
-  <Title> LIST OF COLA MARKET VIEW </Title>
-  <SRS> SDO:8307</SRS>
-</FeatureType><FeatureType xmlns:wfs="http://www.opengis.net/wfs"> 
-  <Name xmlns:myns="http://www.example.com/myns1">myns:SampleFeature</Name>
-  <Title>SAMPLE FEATURE</Title>
-  <SRS>EPSG:32615</SRS>
-</FeatureType></FeatureTypeList>
-  <ogc:Filter_Capabilities xmlns:ogc="http://www.opengis.net/ogc">
-    <ogc:Spatial_Capabilities>
-      <ogc:Spatial_Operators>
-        <ogc:BBOX/>
-        <ogc:Equals/>
-        <ogc:Disjoint/>
-        <ogc:Intersect/>
-        <ogc:Touches/>
-        <ogc:Crosses/>
-        <ogc:Within/>
-        <ogc:Contains/>
-        <ogc:Overlaps/>
-        <ogc:Beyond/>
-        <ogc:DWithin/>
-      </ogc:Spatial_Operators>
-    </ogc:Spatial_Capabilities>
-    <ogc:Scalar_Capabilities>
-      <ogc:Logical_Operators/>
-      <ogc:Comparison_Operators>
-        <ogc:Simple_Comparisons/>
-        <ogc:Like/>
-        <ogc:Between/>
-        <ogc:NullCheck/>
-      </ogc:Comparison_Operators>
-      <ogc:Arithmetic_Operators>
-        <ogc:Simple_Arithmetic/>
-      </ogc:Arithmetic_Operators>
-    </ogc:Scalar_Capabilities>
-  </ogc:Filter_Capabilities>
-</WFS_Capabilities>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <getBookingDetailResponse xmlns="http://tempuri.org/">
+      <getBookingDetailResult>
+        <BookingNumber xmlns="Cangooroo.WS_2013">53812</BookingNumber>
+        <ClientID xmlns="Cangooroo.WS_2013">408</ClientID>
+        <ClientName xmlns="Cangooroo.WS_2013">JUAN TOSELLI - INC </ClientName>
+        <OperatorName xmlns="Cangooroo.WS_2013">MGM Operadora Turística</OperatorName>
+        <NumberOfBookingRooms xmlns="Cangooroo.WS_2013">1</NumberOfBookingRooms>
+        <BaseID xmlns="Cangooroo.WS_2013">0</BaseID>
+        <CNPJ xmlns="Cangooroo.WS_2013">0</CNPJ>
+        <Rooms xmlns="Cangooroo.WS_2013">
+          <HotelBookingRoomResult_j>
+            <BookingDescription xmlns="WS_2013.Hotel">
+              [2019-07-29 PM 12:31:23]   # Possible Bed Type : 1 queen bed (not guaranteed and subject to availability)  / Smokingpreferences : Non Smoking (Not guaranteed and subject to availability) / This booking cannot be modified so it needs to be cancelled and done again. / National Rating This property has been awarded a star rating from the Australian Star Ratings Agency, Star Ratings Australia.Know Before You Go   This property offers transfers from the airport. Guests must contact the property with arrival details before travel, using the contact information on the booking confirmation. Only registered guests are allowed in the guestrooms.   Fees The following fees and deposits are charged by the property at time of service, check-in, or check-out.   Breakfast fee: between AUD 8 and AUD 24 for adults, AUD 8 and AUD 24 for children (approximately)                  Rollaway bed fee: AUD 30 per day             The above list may not be comprehensive. Fees and deposits may not include tax and are subject to change.  Special Check-in Instruction: Airport shuttle service is available on request during limited hours. Fees may apply. Contact the property in advance to make arrangements. None  - Amendment or cancellation after the deadline and before check-in, charge 100% of the first night / charge 100% of total reservation from check-in date
+              - Possible Bed Type : 1 queen bed (not guaranteed and subject to availability)  / Smokingpreferences : Non Smoking (Not guaranteed and subject to availability) / This booking cannot be modified so it needs to be cancelled and done again. / National Rating This property has been awarded a star rating from the Australian Star Ratings Agency, Star Ratings Australia.Know Before You Go   This property offers transfers from the airport. Guests must contact the property with arrival details before travel, using the contact information on the booking confirmation. Only registered guests are allowed in the guestrooms.   Fees The following fees and deposits are charged by the property at time of service, check-in, or check-out.   Breakfast fee: between AUD 8 and AUD 24 for adults, AUD 8 and AUD 24 for children (approximately)                  Rollaway bed fee: AUD 30 per day             The above list may not be comprehensive. Fees and deposits may not include tax and are subject to change.  Special Check-in Instruction: Airport shuttle service is available on request during limited hours. Fees may apply. Contact the property in advance to make arrangements.
+            </BookingDescription>
+            <CancelationBlockWS xmlns="WS_2013.Hotel">false</CancelationBlockWS>
+            <BoardDescription xmlns="WS_2013.Hotel">None</BoardDescription>
+            <BreakfastIncluded xmlns="WS_2013.Hotel">false</BreakfastIncluded>
+            <HotelCategory xmlns="WS_2013.Hotel">0</HotelCategory>
+            <CityId xmlns="WS_2013.Hotel">1001100</CityId>
+            <AgencyCommission xmlns="WS_2013.Hotel">0</AgencyCommission>
+            <CancellationDate xmlns="WS_2013.Hotel">0001-01-01T00:00:00</CancellationDate>
+            <CheckInDate xmlns="WS_2013.Hotel">2019-08-10T00:00:00</CheckInDate>
+            <PaymentDeadline xmlns="WS_2013.Hotel">2019-07-31T21:00:00</PaymentDeadline>
+            <ReservationDate xmlns="WS_2013.Hotel">2019-07-29T12:31:11</ReservationDate>
+            <HotelAddress xmlns="WS_2013.Hotel">225 Mcmillans Road</HotelAddress>
+            <HotelId xmlns="WS_2013.Hotel">177914</HotelId>
+            <ServiceId xmlns="WS_2013.Hotel">65636</ServiceId>
+            <Location xmlns="WS_2013.Hotel">Top End, Territórios do Norte, Austrália,</Location>
+            <LogXMLAuditId xmlns="WS_2013.Hotel">9451155c-5cea-460f-8aa5-85cdd8661cfe</LogXMLAuditId>
+            <AgencyCurrencyCommission xmlns="WS_2013.Hotel">USD</AgencyCurrencyCommission>
+            <CityName xmlns="WS_2013.Hotel">Jingili, Territorio del Norte, Australia</CityName>
+            <HotelName xmlns="WS_2013.Hotel">Quality Hotel Darwin Airport  Ex. Best Western Darwin Airport </HotelName>
+            <NumberOfAdults xmlns="WS_2013.Hotel">2</NumberOfAdults>
+            <NumberOfChildren xmlns="WS_2013.Hotel">0</NumberOfChildren>
+            <NumberOfNights xmlns="WS_2013.Hotel">5</NumberOfNights>
+            <Observation xmlns="WS_2013.Hotel">
+              - Amendment or cancellation after the deadline and before check-in, charge 100% of the first night / charge 100% of total reservation from check-in date
+              - Possible Bed Type : 1 queen bed (not guaranteed and subject to availability)  / Smokingpreferences : Non Smoking (Not guaranteed and subject to availability) / This booking cannot be modified so it needs to be cancelled and done again. / National Rating This property has been awarded a star rating from the Australian Star Ratings Agency, Star Ratings Australia.Know Before You Go   This property offers transfers from the airport. Guests must contact the property with arrival details before travel, using the contact information on the booking confirmation. Only registered guests are allowed in the guestrooms.   Fees The following fees and deposits are charged by the property at time of service, check-in, or check-out.   Breakfast fee: between AUD 8 and AUD 24 for adults, AUD 8 and AUD 24 for children (approximately)                  Rollaway bed fee: AUD 30 per day             The above list may not be comprehensive. Fees and deposits may not include tax and are subject to change.  Special Check-in Instruction: Airport shuttle service is available on request during limited hours. Fees may apply. Contact the property in advance to make arrangements.
+            </Observation>
+            <VoucherObservation xmlns="WS_2013.Hotel">
+              - Booking reserved and payable by RTS
+              - RTS emergency contact(English):  351 913 777 805
+              - RTS emergency contact (Portuguese): 54 911 5635 62 94 / 54 116 841 50 35
+              - O tipo de cama (Twin / Duplo) está sujeito à disponibilidade do hotel. / Taxassuplementares, tais como taxas de estadia ou taxas de alojamento, etc. podem ser cobradas directamente no destino. / Os preços são válidos para clientes possuidores de passaporte Brasileiro.
+
+              INFORMAÇOES IMPORTANTES AO PASSAGEIRO:
+              •Toda e qualquer amenidade oferecida pelo hotel é de responsabilidade da propriedade; e a ausência, interrupção ou alteração da mesma não cabe reembolso por parte da BestBuy Hotel.
+              •Taxas de resort; taxas locais da cidade; estacionamento quando aplicáveis localmente, serão pagos diretamente pelo cliente no hotel.
+              •A grande maioria dos Hotéis tem seu horário de check-in às 15:00 e check-out às 11:00am.
+              •Fazendo seu check-out anterior à data contratada, é necessária uma carta assinada pelo gerente do hotel informando a não cobrança das diárias não utilizadas, somente com este documento haverá condições de pleitear o reembolso e, ainda assim, não é garantido a devolução pois depende do contrato efetuado entre hotel e fornecedor.
+              •Qualquer inconveniente que venha ter no hotel deverá ser reportado imediatamente com o front-desk. A BestBuyHotel não se responsabiliza por qualquer perda ou compensação com problemas ocorridos pontualmente durante sua hospedagem que não constem na contratação dos nossos serviços.
+              •Não é garantido o tipo de cama confirmada, no caso de DBL ou TWIN, esta condição estará disponível somente no ato do check-in na recepção do hotel dependendo de disponibilidade local.
+              •Caso não compareça na data contratada ou após horário normal de entrada no hotel, a BestBuyHotel deverá ser previamente avisada a tempo de notificar o hotel para que sua reserva não seja cancelada e/ou, correndo o risco de cobrança de uma diária ou totalidade das noites contratadas.
+              •Hotel solicitará seu cartão de crédito ou depósito em dinheiro para cobrir eventuais incidentes ocorridos durante sua estadia.
+              •Por motivos de ordem administrativa, ocorrências de pós venda somente serão avaliadas quando reportadas em até 60 dias após a data do check-in.
+
+              RESPONSIBLE FOR THE BOOKING: BESTBUY HOTEL
+
+              Contatos para assistência em caso de problemas no destino: BestBuyHotel.
+              Telefone emergencial (24 horas): +55 11 4805-7272
+
+              Import notes to HOTELIER / SERVICE PROVIDER:
+              Under no circumstances must you request additional information to the guest about the services listed on this voucher. In case of any issues, please make sure to contact the local supplier acting as agent for the service operating company, details of which can be provide upon request.
+
+              RTS Emergency Numbers: (+54) 11 4590.2268 / (+54) 11 4590.2321 / (+54) 9 11 5635.6294 - Payable by:RTS / Ref. Number:BRWF86190
+            </VoucherObservation>
+            <CountryId xmlns="WS_2013.Hotel">AU</CountryId>
+            <Paxs xmlns="WS_2013.Hotel">
+              <Pax>
+                <AddressNumber xmlns="WS_2013.Common">0</AddressNumber>
+                <DDI xmlns="WS_2013.Common">0</DDI>
+                <DDD xmlns="WS_2013.Common">0</DDD>
+                <PhoneNumber xmlns="WS_2013.Common">0</PhoneNumber>
+                <Birthday xmlns="WS_2013.Common">0001-01-01T00:00:00</Birthday>
+                <Name xmlns="WS_2013.Common">TESTA</Name>
+                <LastName xmlns="WS_2013.Common">TESTB</LastName>
+                <Age xmlns="WS_2013.Common">30</Age>
+                <EnumTitle xmlns="WS_2013.Common">Mr</EnumTitle>
+                <EnumPaxType xmlns="WS_2013.Common">Main</EnumPaxType>
+              </Pax>
+              <Pax>
+                <AddressNumber xmlns="WS_2013.Common">0</AddressNumber>
+                <DDI xmlns="WS_2013.Common">0</DDI>
+                <DDD xmlns="WS_2013.Common">0</DDD>
+                <PhoneNumber xmlns="WS_2013.Common">0</PhoneNumber>
+                <Birthday xmlns="WS_2013.Common">0001-01-01T00:00:00</Birthday>
+                <Name xmlns="WS_2013.Common">Mangeaud</Name>
+                <LastName xmlns="WS_2013.Common">Ernest</LastName>
+                <Age xmlns="WS_2013.Common">30</Age>
+                <EnumTitle xmlns="WS_2013.Common">Mr</EnumTitle>
+                <EnumPaxType xmlns="WS_2013.Common">PAX2</EnumPaxType>
+              </Pax>
+            </Paxs>
+            <NetPrice xmlns="WS_2013.Hotel">
+              <Currency xmlns="WS_2013">USD</Currency>
+              <Value xmlns="WS_2013">636.11</Value>
+            </NetPrice>
+            <OperatorCancellationPolicies xmlns="WS_2013.Hotel">
+              <CancellationPolicy>
+                <StartDate xmlns="WS_2013.Common">2019-08-01T00:00:00</StartDate>
+                <EndDate xmlns="WS_2013.Common">2019-08-10T00:00:00</EndDate>
+                <Price xmlns="WS_2013.Common">
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.23</Value>
+                </Price>
+              </CancellationPolicy>
+            </OperatorCancellationPolicies>
+            <ReservationId xmlns="WS_2013.Hotel">53812</ReservationId>
+            <RoomDescription xmlns="WS_2013.Hotel">BusinessRoom</RoomDescription>
+            <PaymentStatus xmlns="WS_2013.Hotel">NotPayed</PaymentStatus>
+            <SystemStatus xmlns="WS_2013.Hotel">Confirmed</SystemStatus>
+            <ConversionRate xmlns="WS_2013.Hotel">1</ConversionRate>
+            <HotelPhone xmlns="WS_2013.Hotel">61-8-89489400</HotelPhone>
+            <ProviderID xmlns="WS_2013.Hotel">198</ProviderID>
+            <ProviderName xmlns="WS_2013.Hotel">BestBuy</ProviderName>
+            <ProviderLogo xmlns="WS_2013.Hotel">http://turgw.t4w.com.br/LogoFornecedor/fornecedor-198.jpg</ProviderLogo>
+            <ProviderBookingCode xmlns="WS_2013.Hotel">378620-527704</ProviderBookingCode>
+            <PaymentDate xmlns="WS_2013.Hotel">0001-01-01T00:00:00</PaymentDate>
+            <PaymentType xmlns="WS_2013.Hotel">OTHER</PaymentType>
+            <Remarks xmlns="WS_2013.Hotel" />
+            <CreationUserDetail xmlns="WS_2013.Hotel">
+              <Name>Usuário de Integración - Juan Toselli - Andrés Baraldi - andres@juantoselli.com</Name>
+              <Id>8299</Id>
+              <UserName>Integracion.juantoselli</UserName>
+              <Email>andres@juantoselli.com</Email>
+            </CreationUserDetail>
+            <LastUpdateUserDetail xmlns="WS_2013.Hotel">
+              <Name>Usuário de Integración - Juan Toselli - Andrés Baraldi - andres@juantoselli.com</Name>
+              <Id>8299</Id>
+              <UserName>Integracion.juantoselli</UserName>
+              <Email>andres@juantoselli.com</Email>
+            </LastUpdateUserDetail>
+            <Payments xmlns="WS_2013.Hotel" />
+            <Taxes xmlns="WS_2013.Hotel" />
+            <InvoiceItems xmlns="WS_2013.Hotel">NaoDefinido</InvoiceItems>
+            <Billed xmlns="WS_2013.Hotel">false</Billed>
+            <BreakdownSales xmlns="WS_2013.Hotel">
+              <Breakdown>
+                <Price>
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.22</Value>
+                </Price>
+                <DateBreakdown>2019-08-10T12:00:00</DateBreakdown>
+              </Breakdown>
+              <Breakdown>
+                <Price>
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.22</Value>
+                </Price>
+                <DateBreakdown>2019-08-11T12:00:00</DateBreakdown>
+              </Breakdown>
+              <Breakdown>
+                <Price>
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.22</Value>
+                </Price>
+                <DateBreakdown>2019-08-12T12:00:00</DateBreakdown>
+              </Breakdown>
+              <Breakdown>
+                <Price>
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.22</Value>
+                </Price>
+                <DateBreakdown>2019-08-13T12:00:00</DateBreakdown>
+              </Breakdown>
+              <Breakdown>
+                <Price>
+                  <Currency xmlns="WS_2013">USD</Currency>
+                  <Value xmlns="WS_2013">127.22</Value>
+                </Price>
+                <DateBreakdown>2019-08-14T12:00:00</DateBreakdown>
+              </Breakdown>
+            </BreakdownSales>
+            <Type xmlns="WS_2013.Hotel">HOTEL</Type>
+            <AcceptPayment xmlns="WS_2013.Hotel">NaoDefinido</AcceptPayment>
+            <CancellationType xmlns="WS_2013.Hotel">ByService</CancellationType>
+            <SupplierExternalReservationCode xmlns="WS_2013.Hotel" />
+            <RoomClientReference xmlns="WS_2013.Hotel" />
+            <UrlVoucher xmlns="WS_2013.Hotel">http://mgmoperadora.cangooroo.net/Voucher/VoucherNovo.aspx?ReservaID=dqFt17Yu%2bVJWcJkarHsNN0Hq3G1Kwxv7TTwhEbJcbeg%3d&amp;ServicoId=9CgpZ%2bqr9FqpsPOehuiw83E9Q919VGGxqod7DC9TYo4%3d&amp;TipoServico=f%2fn7aDWZSOC%2bmRKOYhrhrDXDosrsQTdj2IxGEPJpJ9o%3d&amp;u=touSwpwCZ8ZPepvwpV9HItybB8nV0A6tqBGeIcaSYXRiOQ1SAMZ0Ahs2OiC76JO4&amp;s=341GEmBJsePRxfPfBUosrVA2NXKb2oCqo0ynVm/WuIiXs0ptQN4q1w==</UrlVoucher>
+            <HotelCNPJ xmlns="WS_2013.Hotel" />
+            <PaymentConvertionRate xmlns="WS_2013.Hotel">3.88</PaymentConvertionRate>
+            <PaymentCurrency xmlns="WS_2013.Hotel">BRL</PaymentCurrency>
+            <LastUpdate xmlns="WS_2013.Hotel">2019-07-29T12:31:32</LastUpdate>
+            <CanSeeVoucher xmlns="WS_2013.Hotel">true</CanSeeVoucher>
+          </HotelBookingRoomResult_j>
+        </Rooms>
+        <Transfers xmlns="Cangooroo.WS_2013" />
+        <Tours xmlns="Cangooroo.WS_2013" />
+        <Cars xmlns="Cangooroo.WS_2013" />
+        <TrainTickets xmlns="Cangooroo.WS_2013" />
+        <TrainPass xmlns="Cangooroo.WS_2013" />
+        <Insurances xmlns="Cangooroo.WS_2013" />
+        <TravelPackages xmlns="Cangooroo.WS_2013" />
+        <Circuito xmlns="Cangooroo.WS_2013" />
+        <Flights xmlns="Cangooroo.WS_2013" />
+        <LastUpdate xmlns="Cangooroo.WS_2013">2019-07-29T12:31:45</LastUpdate>
+      </getBookingDetailResult>
+    </getBookingDetailResponse>
+  </soap:Body>
+</soap:Envelope>
