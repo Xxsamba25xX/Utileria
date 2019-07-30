@@ -1,10 +1,9 @@
-﻿using LanguageToObjectLibrary.Contracts;
-using LanguageToObjectLibrary.Models;
+﻿using LanguageToObjectLibrary.Parser.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageToObjectLibrary.Configuration
+namespace LanguageToObjectLibrary.Parser.Configuration
 {
 	public class XmlConfiguration : IConfiguration
 	{
@@ -75,6 +74,11 @@ namespace LanguageToObjectLibrary.Configuration
 		public List<string> ArrayDecorators { get; set; }
 	}
 
+	public enum XmlClassDefinition
+	{
+		byNamespaceAndName = 1,
+		byNamespaceNameAndPath = 2
+	}
 
 	public class ElementNameFilter
 	{

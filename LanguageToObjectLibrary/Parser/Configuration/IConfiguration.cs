@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageToObjectLibrary.Contracts
+namespace LanguageToObjectLibrary.Parser.Configuration
 {
 	public interface IConfiguration
 	{

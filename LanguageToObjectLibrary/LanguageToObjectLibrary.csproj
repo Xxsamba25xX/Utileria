@@ -44,19 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\XmlConfiguration.cs" />
-    <Compile Include="Contracts\IConfiguration.cs" />
+    <Compile Include="Parser\Configuration\XmlConfiguration.cs" />
+    <Compile Include="Parser\Configuration\IConfiguration.cs" />
     <Compile Include="Contracts\IConverter.cs" />
     <Compile Include="Converters\AbstractConverter.cs" />
     <Compile Include="Converters\XmlConverterV2.cs" />
     <Compile Include="Models\AbstractNode.cs" />
-    <Compile Include="Models\CommonStructures.cs" />
-    <Compile Include="Models\GeneratedClass.cs" />
+    <Compile Include="Parser\Models\GeneratedClass.cs" />
     <Compile Include="Models\Status.cs" />
-    <Compile Include="Models\TypeEnumerator.cs" />
+    <Compile Include="Parser\Models\TypeEnumerator.cs" />
     <Compile Include="Models\Utils.cs" />
     <Compile Include="Models\XMLCommentNode.cs" />
-    <Compile Include="Models\XmlConfigurationEnums.cs" />
     <Compile Include="Models\XMLDeclarationNode.cs" />
     <Compile Include="Models\XmlNode.cs" />
     <Compile Include="Parser\XmlParser.cs" />
@@ -71,5 +69,6 @@
       <Name>UtileriaFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

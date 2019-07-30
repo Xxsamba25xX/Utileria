@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageToObjectLibrary.Models
+namespace LanguageToObjectLibrary.Parser.Models
 {
 	[Flags]
 	public enum IntegralTypeEnumerator
