@@ -10,7 +10,7 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		/// <summary>
 		/// Incluir aquí los namespace:name que no se desean usar como atributos. Se pueden usar Regex.
 		/// </summary>
-		public List<ElementNameFilter> IgnoredAttributeTags { get; set; }
+		public List<ElementNameFilter> IgnoredAttributes { get; set; }
 		/// <summary>
 		/// Especifica que filtros se usarán para tratar a una clase como root
 		/// </summary>
@@ -30,7 +30,7 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		/// <summary>
 		/// Especifica como se compondrá el id de una clase. si por namespace y name (mas comprimido) o agregandole a eso el path (mas legible)
 		/// </summary>
-		public XmlClassDefinition XmlClassDefinition { get; set; } = XmlClassDefinition.byNamespaceAndName;
+		public XmlClassDefinition XmlClassIdentifier { get; set; } = XmlClassDefinition.byNamespaceAndName;
 		/// <summary>
 		/// Usa field + Property en true. Solo Property en false.
 		/// </summary>

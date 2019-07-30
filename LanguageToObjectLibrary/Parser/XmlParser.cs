@@ -28,9 +28,33 @@ namespace LanguageToObjectLibrary.Parser
 		{
 			ProcessXml(xmlAsString);
 			var list = OrderClasses_Original();
+			BuildCSharpCode(list);
 			return null;
 		}
 
+		private void BuildCSharpCode(List<GeneratedClass> list)
+		{
+			StringBuilder sb = new StringBuilder();
+			//Clases
+			var clases = CreateClasses(list);//TODO
+		}
+
+		private string CreateUsings()
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (var usingValue in Configuration.Usings)
+			{
+				Regex validador = new Regex("^(?<start>(using[ ]|[ ])?)(?<content>[^ ;,]+)(?<ending>[ ]?[;])$", RegexOptions.IgnoreCase);
+				Match match = validador.Match(usingValue);
+
+				if (!match.Success) continue;
+
+				sb.AppendLine($"using {match.Groups["content"].Value};");
+			}
+			return sb.ToString();
+		}
+
+		//Original porque despues podría poner otros ordenamiento de clase
 		private List<GeneratedClass> OrderClasses_Original()
 		{
 			LinkedList<GeneratedClass> result = new LinkedList<GeneratedClass>();
@@ -233,7 +257,7 @@ namespace LanguageToObjectLibrary.Parser
 
 		private string GenerateId(XmlNode node)
 		{
-			switch (Configuration.XmlClassDefinition)
+			switch (Configuration.XmlClassIdentifier)
 			{
 				case XmlClassDefinition.byNamespaceAndName:
 					return node.Stringify();
@@ -242,7 +266,7 @@ namespace LanguageToObjectLibrary.Parser
 					return node.GetPath();
 					break;
 				default:
-					throw new Exception("LCDT ALL BOYS!!!");
+					throw new Exception("LCDTM ALL BOYS!!!");
 					break;
 			}
 		}
@@ -253,7 +277,7 @@ namespace LanguageToObjectLibrary.Parser
 
 			foreach (XmlNode item in itemInGroup.Attributes)
 			{
-				if (item.Name.StartsWith("xmlns")) continue;
+				if (IsIgnoredAttribute(item.NamespaceURI, item.LocalName)) continue;
 
 				var stringNode = item.Stringify();
 				GeneratedAttribute sameAttr = null;
@@ -277,6 +301,19 @@ namespace LanguageToObjectLibrary.Parser
 				}
 			}
 
+		}
+
+		private bool IsIgnoredAttribute(string namespaceValue, string nameValue)
+		{
+			foreach (var filter in Configuration.IgnoredAttributes)
+			{
+				Regex namespaceFilter = new Regex(filter.Namespace, RegexOptions.IgnoreCase);
+				Regex nameFilter = new Regex(filter.Name, RegexOptions.IgnoreCase);
+
+				if (namespaceFilter.IsMatch(namespaceValue)
+					&& nameFilter.IsMatch(nameValue)) return true;
+			}
+			return false;
 		}
 
 		private string GetValueType(string source)
