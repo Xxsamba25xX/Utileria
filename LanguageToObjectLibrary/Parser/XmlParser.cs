@@ -16,12 +16,21 @@ namespace LanguageToObjectLibrary.Parser
 
 	public class XmlParser
 	{
+		Dictionary<string, bool> ClassNameTable { get; set; } = new Dictionary<string, bool>();
 		Dictionary<string, GeneratedClass> Classes { get; set; } = new Dictionary<string, GeneratedClass>();
+		GeneratedClass Document { get; set; } = new GeneratedClass();
 		XmlConfiguration Configuration { get; set; }
 
 		public XmlParser(XmlConfiguration config)
 		{
 			Configuration = config;
+			Document.Attributes = null;
+			Document.Value = null;
+			Document.Id = "/";
+			Document.Name = "/";
+			Document.ShowName = "/";
+			Document.Namespace = "";
+			ClassNameTable.Add(Document.ShowName, true);
 		}
 
 		public GeneratedClass GetClasses(string xmlAsString)
@@ -36,7 +45,6 @@ namespace LanguageToObjectLibrary.Parser
 		{
 			StringBuilder sb = new StringBuilder();
 			//Clases
-			var clases = CreateClasses(list);//TODO
 		}
 
 		private string CreateUsings()
@@ -67,9 +75,9 @@ namespace LanguageToObjectLibrary.Parser
 			{
 				var item = classItem.Value;
 
-				if (!classItem.Value.IsRoot
-					 || classesAdded.ContainsKey(item.Id))
-					continue;
+				//if (!classItem.Value.IsRoot
+				//	 || classesAdded.ContainsKey(item.Id))
+				//	continue;
 
 				if (additionIndex == null)
 				{
@@ -102,7 +110,7 @@ namespace LanguageToObjectLibrary.Parser
 					GenerateShowName(childNames, childItem);
 
 					//agregar la clase en caso de tenerla
-					var item = childItem.ValueType;
+					var item = childItem.Type;
 					if (classesAdded.ContainsKey(item.Id))
 						continue;
 
@@ -140,44 +148,47 @@ namespace LanguageToObjectLibrary.Parser
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(xmlAsString);
 
-			XmlNode node = doc;
+			nodeStack.Push((doc, Document));
+
 			(XmlNode node, GeneratedClass element) lastStackedElement = default;
 			do
 			{
-				bool stackHasElements = nodeStack.TryPop(out lastStackedElement);
-				node = lastStackedElement != default ? lastStackedElement.node : doc;
 
-				foreach (var groupedNode in node.ChildNodes.ToList().GroupBy(x => $"{x.NamespaceURI}:{x.LocalName}"))
+				bool stackHasElements = nodeStack.TryPop(out lastStackedElement);
+
+				if (!stackHasElements) break;
+
+				foreach (var groupedNode in lastStackedElement.node.ChildNodes.ToList().GroupBy(x => $"{x.NamespaceURI}:{x.LocalName}"))
 				{
 					bool isArray = groupedNode.Count() > 1;
 					var childNode = groupedNode.First();
 
-					if (childNode.NodeType == XmlNodeType.Element
-						 || childNode.NodeType == XmlNodeType.Text
-						 || childNode.NodeType == XmlNodeType.CDATA)
-					{
-						bool isValueNode = groupedNode.All(itemNode => itemNode.IsValueNode());//Revisar
+					if (childNode.NodeType != XmlNodeType.Element
+						&& childNode.NodeType != XmlNodeType.Text
+						&& childNode.NodeType != XmlNodeType.CDATA)
+						continue;
 
-						var processedClass = new GeneratedClass();
-						foreach (var itemInGroup in groupedNode)
+					bool isValueNode = groupedNode.All(itemNode =>
+					{
+						bool isText = itemNode.NodeType == XmlNodeType.Text || itemNode.NodeType == XmlNodeType.CDATA;
+						bool isEmpty = itemNode.ChildNodes.Count == 0;
+						bool hasAttributes = itemNode.Attributes.Where(x => !IsIgnoredAttribute(x.NamespaceURI, x.LocalName)).Count() == 0;
+						return (isText || isEmpty) && !hasAttributes;
+					});
+
+					var processedClass = new GeneratedClass();
+					foreach (var itemInGroup in groupedNode)
+					{
+						if (isValueNode)
 						{
-							if (isValueNode)
-							{
-								processValueNode(lastStackedElement.element, itemInGroup, isArray);
-							}
-							else
-							{
-								processedClass = processNode(lastStackedElement, itemInGroup, isArray);
-								nodeStack.Push((itemInGroup, processedClass));
-							}
+							processValueNode(lastStackedElement.element, itemInGroup, isArray);
+						}
+						else
+						{
+							processedClass = processNode(lastStackedElement, itemInGroup, isArray);
+							nodeStack.Push((itemInGroup, processedClass));
 						}
 					}
-				}
-
-				if (node.ChildNodes.Count == 0)
-				{
-					lastStackedElement.element.ValueType = GetBiggerType(new string[] { lastStackedElement.element.ValueType, "object" });
-					lastStackedElement.element.hasValueType = true;
 				}
 			}
 			while (nodeStack.Count > 0);
@@ -186,43 +197,44 @@ namespace LanguageToObjectLibrary.Parser
 		private void processValueNode(GeneratedClass parent, XmlNode itemInGroup, bool isArray)
 		{
 			var valueType = GetValueType(itemInGroup.InnerText);
-			parent.ValueType = GetBiggerType(new string[] { parent.ValueType, valueType });
-			parent.hasValueType = true;
-			parent.isValueArray |= isArray;
+			parent.Value.Type = GetBiggerType(new string[] { parent.Value.Type, valueType });
+			parent.Value.isArray |= isArray;
 		}
 
-		private GeneratedClass processNode((XmlNode node, GeneratedClass element) parent, XmlNode itemInGroup, bool isArray)
+		private GeneratedClass processNode((XmlNode node, GeneratedClass element) parent, XmlNode node, bool isArray)
 		{
-			var internalId = itemInGroup.Stringify();
+			var internalId = node.Stringify();
 			GeneratedChild result = null;
 
-			if (parent.element != null && parent.element.Childs.ContainsKey(internalId))
+			if (parent.element.Childs.ContainsKey(internalId))
 				result = parent.element.Childs[internalId];
 
 			if (result == null)
 			{
 				result = new GeneratedChild()
 				{
-					Name = itemInGroup.LocalName,
-					Namespace = itemInGroup.NamespaceURI,
+					Name = node.LocalName,
+					Namespace = node.NamespaceURI,
 					IsArray = isArray
 				};
 
 				//Proceso de clase
-				result.ValueType = ProcessClass(itemInGroup);
+				result.Type = ProcessClass(node);
 
 				//Linkeo padre con hijo
 				if (parent.element != null)
 					parent.element.Childs.Add(internalId, result);
+				else
+					Document.Childs.Add(internalId, result);
 			}
 			else
 			{
 				result.IsArray |= isArray;
-				var attributes = result.ValueType.Attributes ?? new Dictionary<string, GeneratedAttribute>();
-				ProcessAttributes(itemInGroup, ref attributes);
+				var attributes = result.Type.Attributes ?? new Dictionary<string, GeneratedAttribute>();
+				ProcessAttributes(node, ref attributes);
 			}
 
-			return result.ValueType;
+			return result.Type;
 		}
 
 		private GeneratedClass ProcessClass(XmlNode node)
@@ -244,8 +256,6 @@ namespace LanguageToObjectLibrary.Parser
 				};
 				Classes.Add(id, result);
 			}
-
-			result.IsRoot |= node.ParentNode.NodeType == XmlNodeType.Document;//Una vez que se setea como root no debería importarme en donde mas aparece.
 
 			//procesar los atributos
 			var attributes = result.Attributes ?? new Dictionary<string, GeneratedAttribute>();
@@ -290,14 +300,17 @@ namespace LanguageToObjectLibrary.Parser
 					{
 						Name = item.LocalName,
 						Namespace = item.NamespaceURI,
-						ValueType = GetValueType(item.InnerText)
+						Value = new Value()
+						{
+							Type = GetValueType(item.InnerText)
+						}
 					};
 					existingAttributes.Add(stringNode, result);
 				}
 				else
 				{
 					var valueType = GetValueType(item.InnerText);
-					sameAttr.ValueType = GetBiggerType(new string[] { valueType, sameAttr.ValueType });
+					sameAttr.Value.Type = GetBiggerType(new string[] { valueType, sameAttr.Value.Type });
 				}
 			}
 
@@ -562,6 +575,11 @@ public static class XmlNodeUtils
 		return isElement && !isFirstNode && (!hasChilds || (singleChild && notElementChild)) && !hasAttributes;
 	}
 
+	/// <summary>
+	/// Evalua si un nodo es de tipo valor
+	/// </summary>
+	/// <param name="me"></param>
+	/// <returns>true si es text o CDATA y si no tiene atributos</returns>
 	public static bool IsValueNode(this XmlNode me)
 	{
 		bool isValue = me.NodeType == XmlNodeType.Text || me.NodeType == XmlNodeType.CDATA;

@@ -4,60 +4,55 @@ using System.Text;
 
 namespace LanguageToObjectLibrary.Parser.Models
 {
-    public abstract class GeneratedElement
-    {
-        protected string name = "";
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-                ShowName = value;
-            }
-        }
-        public string Namespace { get; set; }
-        public string ShowName { get; set; }
+	public abstract class GeneratedElement : IEquatable<GeneratedElement>
+	{
+		public string Id { get; set; } = "";
+		public string Name { get; set; } = "";
+		public string Namespace { get; set; } = "";
+		public string ShowName { get; set; } = "";
 
-    }
+		public bool Equals(GeneratedElement other)
+		{
+			if (other == null) return false;
 
+			return this.Id == other.Id;
+		}
+	}
 
-    public class GeneratedClass : GeneratedElement, IEquatable<GeneratedClass>
-    {
-        public string Id { get; set; }
-        public Dictionary<string, GeneratedAttribute> Attributes { get; set; } = new Dictionary<string, GeneratedAttribute>();
-        public Dictionary<string, GeneratedChild> Childs { get; set; } = new Dictionary<string, GeneratedChild>();
-        public string ValueType { get; set; } = "object";
-        public bool hasValueType { get; set; } = false;
-        public bool isValueArray { get; set; } = false;
-        public bool IsRoot { get; set; } = false;
+	public class GeneratedClass : GeneratedElement
+	{
+		public Dictionary<string, GeneratedAttribute> Attributes { get; set; } = new Dictionary<string, GeneratedAttribute>();
+		public Dictionary<string, GeneratedChild> Childs { get; set; } = new Dictionary<string, GeneratedChild>();
+		public Value Value { get; set; }
+	}
 
-        public bool Equals(GeneratedClass other)
-        {
-            if (other == null) return false;
+	public class Value : GeneratedElement
+	{
+		public Value()
+		{
+			Name = "Value";
+			ShowName = Name;
+		}
 
-            return this.Id == other.Id;
-        }
-    }
+		public string Type { get; set; } = "object";
+		public bool isArray { get; set; } = false;
+	}
 
-    public class GeneratedAttribute : GeneratedElement
-    {
-        public GeneratedAttribute()
-        {
-            Name = "Value";
-            Namespace = "";
-        }
-        public bool IsArray { get; set; } = false;
-        public string ValueType { get; set; } = "object";
-    }
+	public class GeneratedAttribute : GeneratedElement
+	{
+		public GeneratedAttribute()
+		{
+			Name = "Value";
+			Namespace = "";
+			ShowName = Name;
+		}
+		public Value Value { get; set; }
+	}
 
-    public class GeneratedChild : GeneratedElement
-    {
-        public GeneratedClass ValueType { get; set; }
-        public bool IsArray { get; set; } = false;
+	public class GeneratedChild : GeneratedElement
+	{
+		public GeneratedClass Type { get; set; }
+		public bool IsArray { get; set; } = false;
 
-    }
+	}
 }
