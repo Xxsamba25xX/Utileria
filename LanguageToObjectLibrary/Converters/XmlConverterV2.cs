@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using LanguageToObjectLibrary.Contracts;
 using LanguageToObjectLibrary.Models;
+using LanguageToObjectLibrary.Parser.Configuration;
 
 namespace LanguageToObjectLibrary.Converters
 {

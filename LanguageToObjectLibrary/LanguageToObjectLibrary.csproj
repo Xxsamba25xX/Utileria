@@ -59,15 +59,10 @@
     <Compile Include="Models\XmlNode.cs" />
     <Compile Include="Parser\XmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utileria\Extensions\EnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UtileriaFramework\UtileriaFramework.csproj">
-      <Project>{eb6acf83-3d5d-4460-9143-ea5f63b13840}</Project>
-      <Name>UtileriaFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

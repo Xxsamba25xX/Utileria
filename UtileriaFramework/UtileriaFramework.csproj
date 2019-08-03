@@ -68,5 +68,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LanguageToObjectLibrary\LanguageToObjectLibrary.csproj">
+      <Project>{ab8dd506-186c-4884-8306-43969cc84041}</Project>
+      <Name>LanguageToObjectLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

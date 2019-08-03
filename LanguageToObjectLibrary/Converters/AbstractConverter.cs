@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LanguageToObjectLibrary.Contracts;
 using LanguageToObjectLibrary.Models;
+using LanguageToObjectLibrary.Parser.Configuration;
 
 namespace LanguageToObjectLibrary.Converters
 {
