@@ -58,7 +58,7 @@ namespace LanguageToObjectLibrary.Parser
                     processedClasses.Add(childClass.Id, true);
                 }
                 stack.RemoveFirst();
-                stack.AddFirst(childClass.Childs.Values);
+                if (childClass != null) stack.AddFirst(childClass.Childs.Values);
                 pointer = stack.First;
             }
 
@@ -77,21 +77,34 @@ namespace LanguageToObjectLibrary.Parser
                 bool rootByRight = Document.Childs.ContainsKey(classItem.Id);
                 if (rootByConfig || rootByRight)
                 {
-                    sb.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlRootAttribute(ElementName =\"{classItem.Name}\", Namespace = \"{classItem.Namespace}\", IsNullable = false)]");
+                    foreach (var decorator in Configuration.RootDecorators ?? new List<string>())
+                    {
+                        sb.Append(GetTab(level)).AppendLine(decorator);
+                    }
+                    var elementName = (Configuration.HideName && classItem.Name == classItem.ShowName ? "" : $"ElementName =\"{classItem.Name}\"");
+                    var hasElementName = string.IsNullOrWhiteSpace(elementName);
+                    sb.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlRootAttribute({elementName}{(hasElementName ? "," : "")} Namespace = \"{classItem.Namespace}\", IsNullable = false)]");
+                }
+                else
+                {
+                    foreach (var decorator in Configuration.ClassDecorators ?? new List<string>())
+                    {
+                        sb.Append(GetTab(level)).AppendLine(decorator);
+                    }
                 }
                 sb.Append(GetTab(level)).AppendLine($"public partial class {classItem.ShowName}");
                 sb.Append(GetTab(level)).AppendLine("{");
                 level++;
 
                 //Recorrer las propiedades.
-                var propertiesAsString = PropertiesAsString(level, classItem.Childs);
+                var propertiesAsString = PropertiesAsString(level, classItem.Childs, classItem);
                 //Recorrer los attributos.
-                var attributesAsString = AttributesAsString(level, classItem.Attributes);
+                var attributesAsString = AttributesAsString(level, classItem.Attributes, classItem);
                 //Agregar el Value de la clase si hace falta
                 (string field, string property) valueAsString = ("", "");
                 if (classItem.Value != null)
                 {
-                    valueAsString = ValueAsString(level, classItem.Value);
+                    valueAsString = ValueAsString(level, classItem.Value, classItem);
                 }
                 //Rellenamos los fields
                 sb.Append(propertiesAsString.field).Append(attributesAsString.field).Append(valueAsString.field);
@@ -106,7 +119,7 @@ namespace LanguageToObjectLibrary.Parser
             return stringifiedClass;
         }
 
-        private (string field, string property) ValueAsString(int level, Value value)
+        private (string field, string property) ValueAsString(int level, Value value, GeneratedClass classItem)
         {
             StringBuilder property = new StringBuilder();
             StringBuilder field = new StringBuilder();
@@ -122,6 +135,7 @@ namespace LanguageToObjectLibrary.Parser
                 var fieldName = value.ShowName[0].ToString().ToLower() + (value.ShowName.Length > 1 ? value.ShowName.Substring(1) : "") + "Field";
                 field.Append(GetTab(level)).AppendLine($"private {type} {fieldName};");
 
+                property.AppendLine();
                 property.Append(GetTab(level)).AppendLine("{");
                 level++;
                 property.Append(GetTab(level)).AppendLine("get");
@@ -150,7 +164,7 @@ namespace LanguageToObjectLibrary.Parser
             return (field.ToString(), property.ToString());
         }
 
-        private (string field, string property) AttributesAsString(int level, Dictionary<string, GeneratedAttribute> attributes)
+        private (string field, string property) AttributesAsString(int level, Dictionary<string, GeneratedAttribute> attributes, GeneratedClass classItem)
         {
             List<string> fields = new List<string>();
             List<string> properties = new List<string>();
@@ -161,8 +175,16 @@ namespace LanguageToObjectLibrary.Parser
                 StringBuilder field = new StringBuilder();
                 var type = attribute.Value.Type;
 
+                foreach (var decorator in Configuration.AttributeDecorators ?? new List<string>())
+                {
+                    property.Append(GetTab(level)).AppendLine(decorator);
+                }
+
                 //Generamos la firma
-                property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlAttributeAttribute(AttributeName = \"{attribute.Name}\", Namespace = \"{attribute.Namespace}\")]");
+                var elementName = Configuration.HideName && attribute.Name == attribute.ShowName ? "" : $"AttributeName = \"{attribute.Name}\"";
+                var namespaceStr = Configuration.HideNamespace && attribute.Namespace == classItem.Namespace ? "" : $"Namespace = \"{attribute.Namespace}\"";
+                var elementCommaNamespace = string.IsNullOrWhiteSpace(elementName) || string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
+                property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlAttributeAttribute({elementName}{elementCommaNamespace}{namespaceStr})]");
 
                 //Generamos la propiedad y los campos
                 property.Append(GetTab(level)).Append($"public {type} {attribute.ShowName}");
@@ -171,6 +193,7 @@ namespace LanguageToObjectLibrary.Parser
                     var fieldName = attribute.ShowName[0].ToString().ToLower() + (attribute.ShowName.Length > 1 ? attribute.ShowName.Substring(1) : "") + "Field";
                     field.Append(GetTab(level)).AppendLine($"private {type} {fieldName};");
 
+                    property.AppendLine();
                     property.Append(GetTab(level)).AppendLine("{");
                     level++;
                     property.Append(GetTab(level)).AppendLine("get");
@@ -202,7 +225,7 @@ namespace LanguageToObjectLibrary.Parser
             return (string.Join("\n", fields), string.Join("\n", properties));
         }
 
-        private (string field, string property) PropertiesAsString(int level, Dictionary<string, GeneratedChild> childs)
+        private (string field, string property) PropertiesAsString(int level, Dictionary<string, GeneratedChild> childs, GeneratedClass classItem)
         {
             List<string> fields = new List<string>();
             List<string> properties = new List<string>();
@@ -222,22 +245,40 @@ namespace LanguageToObjectLibrary.Parser
                     if (actualNestedChild.Type.Childs.Values.First() != null)
                         actualNestedChild = actualNestedChild.Type.Childs.Values.First();
                 }
-                Configuration.maxArrayDepth = Math.Max(1, Configuration.maxArrayDepth);//=0 minimo
+                Configuration.maxArrayDepth = Math.Max(0, Configuration.maxArrayDepth);
 
                 //Generamos las firmas
-                if (nestedChilds.Count == 0)
+                if (nestedChilds.Count == 0 || Configuration.maxArrayDepth == 0)
                 {
                     type = child.Type.ShowName;
 
-                    if (IsLeafClass(child.Type) && !Configuration.PropertiesAsClasses)
+                    if (IsLeafClass(child.Type) && (!Configuration.PropertiesAsClasses || child.Type.Value.Type == "object"))
                     {
                         type = child.Type.Value.Type;
                         child.Type = null;
                     }
                     arrangedType = Arrange(type, child.IsArray ? 1 : 0);
 
-                    //Si no hay un nested solo procesar el child;
-                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlElementAttribute(ElementName = \"{child.Name}\", Namespace = \"{child.Namespace}\", IsNullable = false)]");
+                    if (child.IsArray)
+                    {
+                        foreach (var decorator in Configuration.ArrayDecorators ?? new List<string>())
+                        {
+                            property.Append(GetTab(level)).AppendLine(decorator);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var decorator in Configuration.PropertyDecorators ?? new List<string>())
+                        {
+                            property.Append(GetTab(level)).AppendLine(decorator);
+                        }
+                    }
+                    var elementName = Configuration.HideName && child.Name == child.ShowName ? "" : $"ElementName = \"{child.Name}\"";
+                    var namespaceStr = Configuration.HideNamespace && child.Namespace == classItem.Namespace ? "" : $"Namespace = \"{child.Namespace}\"";
+                    var elementCommaNamespace = string.IsNullOrWhiteSpace(elementName) || string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
+                    var commaNullable = string.IsNullOrWhiteSpace(elementName) && string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
+
+                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlElementAttribute({elementName}{elementCommaNamespace}{namespaceStr}{commaNullable}IsNullable = false)]");
                 }
                 else
                 {
@@ -257,16 +298,29 @@ namespace LanguageToObjectLibrary.Parser
                         child.Type = lastClassFirstChild.Type;
                     }
 
+                    foreach (var decorator in Configuration.ArrayDecorators ?? new List<string>())
+                    {
+                        property.Append(GetTab(level)).AppendLine(decorator);
+                    }
                     for (int i = 0; i < depth; i++)
                     {
                         var firstChild = nestedChilds[i].Childs.First().Value;
                         var name = firstChild.Name;
                         var nameSpace = firstChild.Namespace;
 
-                        property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArrayItemAttribute(ElementName = \"{name}\", Namespace = \"{nameSpace}\", Type = typeof({Arrange(type, depth - i - 1)}), IsNullable = false, NestingLevel = {i})]");
+                        var subElementName = $"ElementName = \"{name}\"";
+                        var subNamespaceStr = Configuration.HideNamespace && nameSpace == classItem.Namespace ? "" : $"Namespace = \"{nameSpace}\"";
+                        var subElementCommaNamespace = string.IsNullOrWhiteSpace(subElementName) || string.IsNullOrWhiteSpace(subNamespaceStr) ? "" : ", ";
+                        var subCommaNullable = string.IsNullOrWhiteSpace(subElementName) && string.IsNullOrWhiteSpace(subNamespaceStr) ? "" : ", ";
+                        property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArrayItemAttribute({subElementName}{subElementCommaNamespace}{subNamespaceStr}{subCommaNullable}Type = typeof({Arrange(type, depth - i - 1)}), IsNullable = false, NestingLevel = {i})]");
                     }
                     arrangedType = Arrange(type, depth + 1);
-                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArray(ElementName = \"{child.Name}\", Namespace = \"{child.Namespace}\", IsNullable = false)]");
+
+                    var elementName = Configuration.HideName && child.Name == child.ShowName ? "" : $"ElementName = \"{child.Name}\"";
+                    var namespaceStr = Configuration.HideNamespace && child.Namespace == classItem.Namespace ? "" : $", Namespace = \"{child.Namespace}\"";
+                    var elementCommaNamespace = string.IsNullOrWhiteSpace(elementName) || string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
+                    var commaNullable = string.IsNullOrWhiteSpace(elementName) && string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
+                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArray({elementName}{elementCommaNamespace}{namespaceStr}{commaNullable}IsNullable = false)]");
                 }
 
                 //Generamos la propiedad y los campos
@@ -276,6 +330,7 @@ namespace LanguageToObjectLibrary.Parser
                     var fieldName = child.ShowName[0].ToString().ToLower() + (child.ShowName.Length > 1 ? child.ShowName.Substring(1) : "") + "Field";
                     field.Append(GetTab(level)).AppendLine($"private {arrangedType} {fieldName};");
 
+                    property.AppendLine();
                     property.Append(GetTab(level)).AppendLine("{");
                     level++;
                     property.Append(GetTab(level)).AppendLine("get");
@@ -327,9 +382,9 @@ namespace LanguageToObjectLibrary.Parser
 
         private bool IsLeafClass(GeneratedClass generatedClass)
         {
-            bool hasAttributes = generatedClass.Attributes.Count == 0;
+            bool hasAttributes = generatedClass.Attributes?.Count > 0;
             bool hasValue = generatedClass.Value != null;
-            bool hasChilds = generatedClass.Childs.Count == 0;
+            bool hasChilds = generatedClass.Childs?.Count > 0;
 
             return hasValue && !hasAttributes && !hasChilds;
         }
@@ -380,16 +435,42 @@ namespace LanguageToObjectLibrary.Parser
                         {
                             //Borrar los Values de tipo Object cuando la clase tenga childs
                             classItem.Value.Value = null;
+                            hasValue = false;
                         }
-                        else if (hasValue)
+
+                        //Child Showname fix
+                        foreach (var childItem in classItem.Value.Childs.Values)
                         {
-                            //Value Showname
                             int showNameCount = 0;
                             do
                             {
-                                classItem.Value.Value.ShowName = classItem.Value.Value.Name + (showNameCount == 0 ? "" : $"_{showNameCount}");
+                                childItem.ShowName = childItem.Name + (showNameCount == 0 ? "" : $"{showNameCount}");
                                 showNameCount++;
-                            } while (classItem.Value.Childs.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName));
+                            } while (classItem.Value.Childs.Values.Any(x => x.Id != childItem.Id && x.ShowName == childItem.ShowName));
+                        }
+                    }
+                    if (hasValue)
+                    {
+                        //Value Showname fix
+                        int showNameCount = 0;
+                        do
+                        {
+                            classItem.Value.Value.ShowName = classItem.Value.Value.Name + (showNameCount == 0 ? "" : $"{showNameCount}");
+                            showNameCount++;
+                        } while ((hasChilds && classItem.Value.Childs.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName))
+                                || (hasAttributes && classItem.Value.Attributes.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName)));
+                    }
+                    if (hasAttributes)
+                    {
+                        //Attr Showname fix
+                        int showNameCount = 0;
+                        foreach (var attr in classItem.Value.Attributes.Values)
+                        {
+                            do
+                            {
+                                attr.ShowName = attr.Name + (showNameCount == 0 ? "" : $"{showNameCount}");
+                                showNameCount++;
+                            } while (hasChilds && classItem.Value.Childs.Any(x => x.Value.ShowName == attr.ShowName));
                         }
                     }
                     if (!hasChilds && !hasAttributes && hasValue && !Configuration.PropertiesAsClasses)
@@ -403,7 +484,7 @@ namespace LanguageToObjectLibrary.Parser
                         int showNameCount = 0;
                         do
                         {
-                            classItem.Value.ShowName = classItem.Value.Name + (showNameCount == 0 ? "" : $"_{showNameCount}");
+                            classItem.Value.ShowName = classItem.Value.Name + (showNameCount == 0 ? "" : $"{showNameCount}");
                             showNameCount++;
                         } while (nameTable.ContainsKey(classItem.Value.ShowName));
                         nameTable.Add(classItem.Value.ShowName, true);
@@ -469,7 +550,7 @@ namespace LanguageToObjectLibrary.Parser
                         bool isText = itemNode.NodeType == XmlNodeType.Text || itemNode.NodeType == XmlNodeType.CDATA;
                         bool isEmpty = itemNode.ChildNodes.Count == 0;
                         bool hasAttributes = itemNode.Attributes.Where(x => !IsIgnoredAttribute(x.NamespaceURI, x.LocalName)).Count() > 0;
-                        return (isText || isEmpty) && !hasAttributes;
+                        return (isText) && !hasAttributes;
                     });
 
                     var processedClass = new GeneratedClass();
@@ -670,7 +751,7 @@ namespace LanguageToObjectLibrary.Parser
             string resultType = "";
 
 
-            if (Regex.IsMatch(source, $"^[0-9]+?([{CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator}][0-9]+)?$", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(source.Trim(), $"^[0-9]+?([{CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator}][0-9]+)?$", RegexOptions.IgnoreCase))
             {
                 if (Configuration.UsedIntegralTypes.HasFlag(IntegralTypeEnumerator.ulongType) && ulong.TryParse(source, out ulongValue))
                     resultType = "ulong";

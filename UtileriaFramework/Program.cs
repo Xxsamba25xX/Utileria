@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using CangoorooHotelProvider.XMLHelpers.Generated;
 using UtileriaFramework.Extensions;
 using System.Globalization;
 using UtileriaFramework.ObjectUtils;
@@ -17,6 +16,7 @@ using System.Xml;
 using Newtonsoft.Json;
 using UtileriaFramework.Contracts.Json;
 using LanguageToObjectLibrary.Parser;
+using tuvi;
 
 namespace UtileriaFramework
 {
@@ -25,14 +25,21 @@ namespace UtileriaFramework
     {
         private static void Main(string[] args)
         {
+            //TestDeserialize();
+
             XmlParser parser = new XmlParser(new LanguageToObjectLibrary.Parser.Configuration.XmlConfiguration()
             {
-                maxArrayDepth = 2000
+                maxArrayDepth = 0,
+                ArrayAsList = true,
+                UseFullProperties = true,
+                PropertiesAsClasses = true,
+                UsedFloatingTypes = (LanguageToObjectLibrary.Parser.Models.FloatingTypeEnumerator)7,
+                HideName = true,
+                HideNamespace = true
             });
 
             parser.GetClasses(File.ReadAllText("file"));
 
-            TestDeserializeJson();
             //Console.WriteLine(GetException(new Exception("easdaea", new Exception("qqq"))));
             string prueba = "asdasda<si";
 
@@ -71,7 +78,8 @@ namespace UtileriaFramework
         {
             var file = File.ReadAllText("file");
             var serializator = new XmlSerializer();
-            var deserialized = serializator.DeserializeObject<Envelope>(file);
+            var deserialized = serializator.DeserializeObject<A>(file);
+            var serialized = serializator.SerializeObject(deserialized);
             Console.WriteLine("Se deserializó");
         }
 

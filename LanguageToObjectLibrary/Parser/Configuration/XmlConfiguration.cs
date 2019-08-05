@@ -72,7 +72,9 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		/// Especifica los decoradores que se usaran en los arrays
 		/// </summary>
 		public List<string> ArrayDecorators { get; set; }
-	}
+        public bool HideNamespace { get;  set; }
+        public bool HideName { get;  set; }
+    }
 
 	public enum XmlClassDefinition
 	{
