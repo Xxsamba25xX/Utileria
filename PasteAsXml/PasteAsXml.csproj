@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="App\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App\Form1.designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommandGroup.cs" />
     <Compile Include="Parser\Configuration\IConfiguration.cs" />
     <Compile Include="Parser\Configuration\XmlConfiguration.cs" />
@@ -79,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\CommandGroup.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="App\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
