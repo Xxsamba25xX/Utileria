@@ -25,7 +25,10 @@ namespace UtileriaFramework
     {
         private static void Main(string[] args)
         {
-            XmlParser parser = new XmlParser(new LanguageToObjectLibrary.Parser.Configuration.XmlConfiguration());
+            XmlParser parser = new XmlParser(new LanguageToObjectLibrary.Parser.Configuration.XmlConfiguration()
+            {
+                maxArrayDepth = 2000
+            });
 
             parser.GetClasses(File.ReadAllText("file"));
 

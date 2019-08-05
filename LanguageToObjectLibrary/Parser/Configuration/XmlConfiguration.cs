@@ -46,7 +46,7 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		/// <summary>
 		/// Especifica el maximo numero de anidaciones que se pueden usar para los arrayItem (a mas numero mas dificil de entender la clase generada)
 		/// </summary>
-		public int maxArrayItemLevel { get; set; }
+		public int maxArrayDepth { get; set; }
 
 		/// <summary>
 		/// Especifica los usings de la clase generada

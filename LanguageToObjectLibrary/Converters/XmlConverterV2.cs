@@ -98,3 +98,174 @@ namespace LanguageToObjectLibrary.Converters
 
     }
 }
+
+
+
+
+[System.Xml.Serialization.XmlRootAttribute(ElementName = "a", Namespace = "", IsNullable = false)]
+public partial class A
+{
+
+
+    [System.Xml.Serialization.XmlArrayItemAttribute(ElementName = "c", Namespace = "", Type = typeof(E[]), IsNullable = false, NestingLevel = 0)]
+    [System.Xml.Serialization.XmlArrayItemAttribute(ElementName = "e", Namespace = "", Type = typeof(E), IsNullable = false, NestingLevel = 1)]
+    [System.Xml.Serialization.XmlArray(ElementName = "b", Namespace = "", IsNullable = false)]
+    public E[][][] B { get; set; }
+
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string Value { get; set; }
+
+}
+
+public partial class E
+{
+
+
+    [System.Xml.Serialization.XmlElementAttribute(ElementName = "d", Namespace = "", IsNullable = false)]
+    public D[] D { get; set; }
+
+    [System.Xml.Serialization.XmlAttributeAttribute(AttributeName = "aux", Namespace = "")]
+    public string Aux { get; set; }
+
+}
+
+public partial class D
+{
+
+
+    [System.Xml.Serialization.XmlAttributeAttribute(AttributeName = "aux", Namespace = "")]
+    public string Aux { get; set; }
+
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string Value { get; set; }
+
+}
+
+
+
+
+
+
+// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class a
+{
+
+    private aBCE[][][] bField;
+
+    private string[] textField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("c", typeof(aBCE[]), IsNullable = false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("e", typeof(aBCE), IsNullable = false, NestingLevel = 1)]
+    public aBCE[][][] b
+    {
+        get
+        {
+            return this.bField;
+        }
+        set
+        {
+            this.bField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string[] Text
+    {
+        get
+        {
+            return this.textField;
+        }
+        set
+        {
+            this.textField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class aBCE
+{
+
+    private aBCED[] dField;
+
+    private string auxField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("d")]
+    public aBCED[] d
+    {
+        get
+        {
+            return this.dField;
+        }
+        set
+        {
+            this.dField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string aux
+    {
+        get
+        {
+            return this.auxField;
+        }
+        set
+        {
+            this.auxField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class aBCED
+{
+
+    private string auxField;
+
+    private byte valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string aux
+    {
+        get
+        {
+            return this.auxField;
+        }
+        set
+        {
+            this.auxField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public byte Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+

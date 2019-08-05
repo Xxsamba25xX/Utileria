@@ -31,21 +31,341 @@ namespace LanguageToObjectLibrary.Parser
             Document.Namespace = "";
         }
 
-        public GeneratedClass GetClasses(string xmlAsString)
+        public string GetClasses(string xmlAsString)
         {
             ProcessXml(xmlAsString);
             FixClasses();
-            //BuildCSharpCode();
-            return null;
+            var stringifiedClasses = ClassesToString();
+            string prueba1 = GenerateCSharpDocument(stringifiedClasses);
+            return prueba1;
+        }
+
+        private string GenerateCSharpDocument(Dictionary<string, string> stringifiedClasses)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            Dictionary<string, bool> processedClasses = new Dictionary<string, bool>();
+            if (Document.Childs.Count == 0) return "";
+            LinkedList<GeneratedChild> stack = new LinkedList<GeneratedChild>();
+            stack.AddFirst(Document.Childs.Values);
+            var pointer = stack.First;
+            while (stack.Count != 0)
+            {
+                var childClass = pointer.Value.Type;
+                if (childClass != null && !processedClasses.ContainsKey(childClass.Id))
+                {
+                    sb.AppendLine(stringifiedClasses[childClass.Id]);
+                    processedClasses.Add(childClass.Id, true);
+                }
+                stack.RemoveFirst();
+                stack.AddFirst(childClass.Childs.Values);
+                pointer = stack.First;
+            }
+
+            return sb.ToString();
+        }
+
+        private Dictionary<string, string> ClassesToString()
+        {
+            int level = 0;
+            var stringifiedClass = new Dictionary<string, string>();
+
+            foreach (var classItem in Classes.Values)
+            {
+                StringBuilder sb = new StringBuilder();
+                bool rootByConfig = Configuration.TreatedAsRoot != null && Configuration.TreatedAsRoot.Any(x => Regex.IsMatch(classItem.Name, x.Name) && Regex.IsMatch(classItem.Namespace, x.Namespace));
+                bool rootByRight = Document.Childs.ContainsKey(classItem.Id);
+                if (rootByConfig || rootByRight)
+                {
+                    sb.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlRootAttribute(ElementName =\"{classItem.Name}\", Namespace = \"{classItem.Namespace}\", IsNullable = false)]");
+                }
+                sb.Append(GetTab(level)).AppendLine($"public partial class {classItem.ShowName}");
+                sb.Append(GetTab(level)).AppendLine("{");
+                level++;
+
+                //Recorrer las propiedades.
+                var propertiesAsString = PropertiesAsString(level, classItem.Childs);
+                //Recorrer los attributos.
+                var attributesAsString = AttributesAsString(level, classItem.Attributes);
+                //Agregar el Value de la clase si hace falta
+                (string field, string property) valueAsString = ("", "");
+                if (classItem.Value != null)
+                {
+                    valueAsString = ValueAsString(level, classItem.Value);
+                }
+                //Rellenamos los fields
+                sb.Append(propertiesAsString.field).Append(attributesAsString.field).Append(valueAsString.field);
+                //Rellenamos las properties
+                sb.Append(propertiesAsString.property).Append(attributesAsString.property).Append(valueAsString.property);
+                level--;
+                sb.Append(GetTab(level)).AppendLine("}");
+
+                stringifiedClass.Add(classItem.Id, sb.ToString());
+            }
+
+            return stringifiedClass;
+        }
+
+        private (string field, string property) ValueAsString(int level, Value value)
+        {
+            StringBuilder property = new StringBuilder();
+            StringBuilder field = new StringBuilder();
+            var type = value.Type;
+
+            //Generamos la firma
+            property.Append(GetTab(level)).AppendLine("[System.Xml.Serialization.XmlTextAttribute()]");
+
+            //Generamos la propiedad y los campos
+            property.Append(GetTab(level)).Append($"public {type} {value.ShowName}");
+            if (Configuration.UseFullProperties)
+            {
+                var fieldName = value.ShowName[0].ToString().ToLower() + (value.ShowName.Length > 1 ? value.ShowName.Substring(1) : "") + "Field";
+                field.Append(GetTab(level)).AppendLine($"private {type} {fieldName};");
+
+                property.Append(GetTab(level)).AppendLine("{");
+                level++;
+                property.Append(GetTab(level)).AppendLine("get");
+                property.Append(GetTab(level)).AppendLine("{");
+                level++;
+                property.Append(GetTab(level)).AppendLine($"return this.{fieldName};");
+                level--;
+                property.Append(GetTab(level)).AppendLine("}");
+                property.Append(GetTab(level)).AppendLine("set");
+                property.Append(GetTab(level)).AppendLine("{");
+                level++;
+                property.Append(GetTab(level)).AppendLine($"this.{fieldName} = value;");
+                level--;
+                property.Append(GetTab(level)).AppendLine("}");
+                level--;
+                property.Append(GetTab(level)).AppendLine("}");
+            }
+            else
+            {
+                property.AppendLine("{ get; set; }");
+            }
+
+            property.AppendLine();
+            field.AppendLine();
+
+            return (field.ToString(), property.ToString());
+        }
+
+        private (string field, string property) AttributesAsString(int level, Dictionary<string, GeneratedAttribute> attributes)
+        {
+            List<string> fields = new List<string>();
+            List<string> properties = new List<string>();
+
+            foreach (var attribute in attributes.Values)
+            {
+                StringBuilder property = new StringBuilder();
+                StringBuilder field = new StringBuilder();
+                var type = attribute.Value.Type;
+
+                //Generamos la firma
+                property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlAttributeAttribute(AttributeName = \"{attribute.Name}\", Namespace = \"{attribute.Namespace}\")]");
+
+                //Generamos la propiedad y los campos
+                property.Append(GetTab(level)).Append($"public {type} {attribute.ShowName}");
+                if (Configuration.UseFullProperties)
+                {
+                    var fieldName = attribute.ShowName[0].ToString().ToLower() + (attribute.ShowName.Length > 1 ? attribute.ShowName.Substring(1) : "") + "Field";
+                    field.Append(GetTab(level)).AppendLine($"private {type} {fieldName};");
+
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine("get");
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine($"return this.{fieldName};");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                    property.Append(GetTab(level)).AppendLine("set");
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine($"this.{fieldName} = value;");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                }
+                else
+                {
+                    property.AppendLine("{ get; set; }");
+                }
+
+                property.AppendLine();
+                field.AppendLine();
+                fields.Add(field.ToString());
+                properties.Add(property.ToString());
+            }
+
+            return (string.Join("\n", fields), string.Join("\n", properties));
+        }
+
+        private (string field, string property) PropertiesAsString(int level, Dictionary<string, GeneratedChild> childs)
+        {
+            List<string> fields = new List<string>();
+            List<string> properties = new List<string>();
+            foreach (var child in childs.Values)
+            {
+                StringBuilder property = new StringBuilder();
+                StringBuilder field = new StringBuilder();
+                var type = "";
+                var arrangedType = "";
+
+                //Generamos los nesting de arrays
+                List<GeneratedClass> nestedChilds = new List<GeneratedClass>();
+                GeneratedChild actualNestedChild = child;
+                while (IsNesteableChild(actualNestedChild))
+                {
+                    nestedChilds.Add(actualNestedChild.Type);
+                    if (actualNestedChild.Type.Childs.Values.First() != null)
+                        actualNestedChild = actualNestedChild.Type.Childs.Values.First();
+                }
+                Configuration.maxArrayDepth = Math.Max(1, Configuration.maxArrayDepth);//=0 minimo
+
+                //Generamos las firmas
+                if (nestedChilds.Count == 0)
+                {
+                    type = child.Type.ShowName;
+
+                    if (IsLeafClass(child.Type) && !Configuration.PropertiesAsClasses)
+                    {
+                        type = child.Type.Value.Type;
+                        child.Type = null;
+                    }
+                    arrangedType = Arrange(type, child.IsArray ? 1 : 0);
+
+                    //Si no hay un nested solo procesar el child;
+                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlElementAttribute(ElementName = \"{child.Name}\", Namespace = \"{child.Namespace}\", IsNullable = false)]");
+                }
+                else
+                {
+                    //Si tiene mas de uno procesar la lista 
+                    var depth = Math.Min(nestedChilds.Count, Configuration.maxArrayDepth);
+                    var lastClass = nestedChilds[depth - 1];
+                    var lastClassFirstChild = lastClass.Childs.First().Value;
+                    type = lastClassFirstChild.Type.ShowName;
+
+                    if (IsLeafClass(lastClassFirstChild.Type) && !Configuration.PropertiesAsClasses)
+                    {
+                        type = lastClassFirstChild.Type.Value.Type;
+                        child.Type = null;
+                    }
+                    else
+                    {
+                        child.Type = lastClassFirstChild.Type;
+                    }
+
+                    for (int i = 0; i < depth; i++)
+                    {
+                        var firstChild = nestedChilds[i].Childs.First().Value;
+                        var name = firstChild.Name;
+                        var nameSpace = firstChild.Namespace;
+
+                        property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArrayItemAttribute(ElementName = \"{name}\", Namespace = \"{nameSpace}\", Type = typeof({Arrange(type, depth - i - 1)}), IsNullable = false, NestingLevel = {i})]");
+                    }
+                    arrangedType = Arrange(type, depth + 1);
+                    property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlArray(ElementName = \"{child.Name}\", Namespace = \"{child.Namespace}\", IsNullable = false)]");
+                }
+
+                //Generamos la propiedad y los campos
+                property.Append(GetTab(level)).Append($"public {arrangedType} {child.ShowName}");
+                if (Configuration.UseFullProperties)
+                {
+                    var fieldName = child.ShowName[0].ToString().ToLower() + (child.ShowName.Length > 1 ? child.ShowName.Substring(1) : "") + "Field";
+                    field.Append(GetTab(level)).AppendLine($"private {arrangedType} {fieldName};");
+
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine("get");
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine($"return this.{fieldName};");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                    property.Append(GetTab(level)).AppendLine("set");
+                    property.Append(GetTab(level)).AppendLine("{");
+                    level++;
+                    property.Append(GetTab(level)).AppendLine($"this.{fieldName} = value;");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                    level--;
+                    property.Append(GetTab(level)).AppendLine("}");
+                }
+                else
+                {
+                    property.AppendLine("{ get; set; }");
+                }
+
+                property.AppendLine();
+                field.AppendLine();
+                fields.Add(field.ToString());
+                properties.Add(property.ToString());
+            }
+
+            return (string.Join("\n", fields), string.Join("\n", properties));
+        }
+
+        private string Arrange(string type, int depth)
+        {
+            string result = type;
+            for (int i = 0; i < depth; i++)
+            {
+                if (Configuration.ArrayAsList)
+                {
+                    result = $"List<{result}>";
+                }
+                else
+                {
+                    result = $"{result}[]";
+                }
+            }
+
+            return result;
+        }
+
+        private bool IsLeafClass(GeneratedClass generatedClass)
+        {
+            bool hasAttributes = generatedClass.Attributes.Count == 0;
+            bool hasValue = generatedClass.Value != null;
+            bool hasChilds = generatedClass.Childs.Count == 0;
+
+            return hasValue && !hasAttributes && !hasChilds;
+        }
+
+        private bool IsNesteableChild(GeneratedChild child)
+        {
+            if (child == null) return false;
+
+            bool isArray = child.IsArray;
+            bool hasValue = child.Type.Value != null;
+            bool hasUniqueChild = child.Type.Childs?.Count == 1;
+            bool hasAttributes = child.Type.Attributes?.Count > 0;
+            bool hasOnlyUniqueChild = !hasValue && hasUniqueChild && !hasAttributes;
+
+            return isArray && hasOnlyUniqueChild;
+        }
+
+        private string GetTab(int level)
+        {
+            string tab = "   ";
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < level; i++)
+            {
+                sb.Append(tab);
+            }
+
+            return sb.ToString();
         }
 
         private void FixClasses()
         {
-            var newClasses = new Dictionary<string, GeneratedClass>(Classes);
             var nameTable = new Dictionary<string, bool>();
 
             List<string> idsToRemove = new List<string>();
-            foreach (var classGroup in newClasses.GroupBy(x => x.Value.Name))
+            foreach (var classGroup in Classes.GroupBy(x => x.Value.Name))
             {
                 var classGroupCount = classGroup.Count();
                 foreach (var classItem in classGroup)
@@ -54,10 +374,23 @@ namespace LanguageToObjectLibrary.Parser
                     bool hasValue = classItem.Value.Value != null;
                     bool hasAttributes = classItem.Value.Attributes?.Count > 0;
                     bool isValueObject = hasValue && classItem.Value.Value.Type == "object";
-                    if (hasChilds && isValueObject)
+                    if (hasChilds)
                     {
-                        //Borrar los Values de tipo Object cuando la clase tenga childs
-                        classItem.Value.Value = null;
+                        if (isValueObject)
+                        {
+                            //Borrar los Values de tipo Object cuando la clase tenga childs
+                            classItem.Value.Value = null;
+                        }
+                        else if (hasValue)
+                        {
+                            //Value Showname
+                            int showNameCount = 0;
+                            do
+                            {
+                                classItem.Value.Value.ShowName = classItem.Value.Value.Name + (showNameCount == 0 ? "" : $"_{showNameCount}");
+                                showNameCount++;
+                            } while (classItem.Value.Childs.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName));
+                        }
                     }
                     if (!hasChilds && !hasAttributes && hasValue && !Configuration.PropertiesAsClasses)
                     {
@@ -80,16 +413,8 @@ namespace LanguageToObjectLibrary.Parser
 
             foreach (string item in idsToRemove)
             {
-                newClasses.Remove(item);
+                Classes.Remove(item);
             }
-
-            return newClasses;
-        }
-
-        private void BuildCSharpCode(List<GeneratedClass> list)
-        {
-            StringBuilder sb = new StringBuilder();
-            //Clases
         }
 
         private string CreateUsings()
@@ -105,18 +430,6 @@ namespace LanguageToObjectLibrary.Parser
                 sb.AppendLine($"using {match.Groups["content"].Value};");
             }
             return sb.ToString();
-        }
-
-        private void GenerateShowName(Dictionary<string, bool> nameTable, GeneratedElement item)
-        {
-            int showNameCount = 0;
-            string added = showNameCount == 0 ? "" : $"_{showNameCount}";
-            while (nameTable.ContainsKey(item.Name + added))
-                showNameCount++;
-
-            item.ShowName = item.Name + added;
-
-            nameTable.Add(item.ShowName, true);
         }
 
         private void ProcessXml(string xmlAsString)
@@ -137,7 +450,8 @@ namespace LanguageToObjectLibrary.Parser
 
                 if (lastStackedElement.node.NodeType == XmlNodeType.Element && lastStackedElement.node.ChildNodes.Count == 0)
                 {
-                    SetValue(lastStackedElement.element, "object", lastStackedElement.element.Namespace, false);//Se setea un value en object. Luego hay que limpiar los que tienen value en object y encima childs
+                    //Se setea un value en object. Luego hay que limpiar los que tienen value en object y encima childs
+                    SetValue(lastStackedElement.element, "object", lastStackedElement.element.Namespace, false);
                 }
 
                 foreach (var groupedNode in lastStackedElement.node.ChildNodes.ToList().GroupBy(x => $"{x.NamespaceURI}:{x.LocalName}"))
@@ -192,14 +506,12 @@ namespace LanguageToObjectLibrary.Parser
                     Name = "Value",
                     ShowName = "Value",
                     Namespace = namespaceURI,
-                    isArray = isArray,
                     Type = valueType
                 };
             }
             else
             {
                 parent.Value.Type = GetBiggerType(new string[] { parent.Value.Type, valueType });
-                parent.Value.isArray |= isArray;
             }
         }
 
@@ -305,6 +617,7 @@ namespace LanguageToObjectLibrary.Parser
                     {
                         Name = item.LocalName,
                         Namespace = item.NamespaceURI,
+                        ShowName = item.LocalName,
                         Value = new Value()
                         {
                             Type = GetValueType(item.InnerText)
@@ -323,6 +636,7 @@ namespace LanguageToObjectLibrary.Parser
 
         private bool IsIgnoredAttribute(string namespaceValue, string nameValue)
         {
+            if (Configuration.IgnoredAttributes == null) return false;
             foreach (var filter in Configuration.IgnoredAttributes)
             {
                 Regex namespaceFilter = new Regex(filter.Namespace, RegexOptions.IgnoreCase);
