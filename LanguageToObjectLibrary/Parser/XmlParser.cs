@@ -666,13 +666,10 @@ namespace LanguageToObjectLibrary.Parser
             {
                 case XmlClassDefinition.byNamespaceAndName:
                     return node.Stringify();
-                    break;
                 case XmlClassDefinition.byNamespaceNameAndPath:
                     return node.GetPath();
-                    break;
                 default:
                     throw new Exception("LCDTM ALL BOYS!!!");
-                    break;
             }
         }
 
