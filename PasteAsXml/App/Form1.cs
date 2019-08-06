@@ -16,7 +16,7 @@ namespace Prueba_extensiones.App
 	{
 		ResourceManager rm = new ResourceManager(typeof(Form1));
 
-		public Form1(Microsoft.VisualStudio.Settings.WritableSettingsStore userSettingsStore)
+		public Form1()
 		{
 			InitializeComponent();
 		}
@@ -25,5 +25,15 @@ namespace Prueba_extensiones.App
 		{
 			
 		}
-	}
+
+        private void Panel10_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
