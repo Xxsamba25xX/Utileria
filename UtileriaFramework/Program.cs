@@ -31,7 +31,7 @@ namespace UtileriaFramework
             {
                 maxArrayDepth = 0,
                 ArrayAsList = true,
-                UseFullProperties = true,
+                UseFullProperties = false,
                 PropertiesAsClasses = true,
                 UsedFloatingTypes = (LanguageToObjectLibrary.Parser.Models.FloatingTypeEnumerator)7,
                 HideName = true,
