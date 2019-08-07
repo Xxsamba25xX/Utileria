@@ -312,8 +312,8 @@
 			this.label2.Size = new System.Drawing.Size(363, 49);
 			this.label2.TabIndex = 0;
 			this.label2.Text = "Elige que tipos de datos nativos son los que se usarán en la interpretación del x" +
-	 "ml. Recuerda que se intentará usar desde los datos mas ligeros a los mas pesados" +
-	 ".";
+    "ml. Recuerda que se intentará usar desde los datos mas ligeros a los mas pesados" +
+    ".";
 			// 
 			// grpRootDecorators
 			// 
@@ -474,7 +474,7 @@
 			this.label5.Size = new System.Drawing.Size(363, 33);
 			this.label5.TabIndex = 0;
 			this.label5.Text = "Especifique aquí todos los decoradores que desea ver para las propiedades que sea" +
-	 "n Array.";
+    "n Array.";
 			// 
 			// grpAttributeDecorators
 			// 
@@ -565,9 +565,9 @@
 			// 
 			// lstIgnoredAttributes
 			// 
-			this.lstIgnoredAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-				| System.Windows.Forms.AnchorStyles.Left)
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lstIgnoredAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lstIgnoredAttributes.FormattingEnabled = true;
 			this.lstIgnoredAttributes.Location = new System.Drawing.Point(3, 33);
 			this.lstIgnoredAttributes.Name = "lstIgnoredAttributes";
@@ -632,9 +632,9 @@
 			// 
 			// lstRootClasses
 			// 
-			this.lstRootClasses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-				| System.Windows.Forms.AnchorStyles.Left)
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lstRootClasses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lstRootClasses.FormattingEnabled = true;
 			this.lstRootClasses.Location = new System.Drawing.Point(3, 33);
 			this.lstRootClasses.Name = "lstRootClasses";
@@ -870,9 +870,9 @@
 			// 
 			// lstIgnoredClasses
 			// 
-			this.lstIgnoredClasses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-				| System.Windows.Forms.AnchorStyles.Left)
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lstIgnoredClasses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lstIgnoredClasses.FormattingEnabled = true;
 			this.lstIgnoredClasses.Location = new System.Drawing.Point(3, 33);
 			this.lstIgnoredClasses.Name = "lstIgnoredClasses";
@@ -890,8 +890,8 @@
 			// 
 			// panel8
 			// 
-			this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-				| System.Windows.Forms.AnchorStyles.Left)));
+			this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.panel8.AutoScroll = true;
 			this.panel8.Controls.Add(this.flowLayoutPanel3);
 			this.panel8.Location = new System.Drawing.Point(1, 1);
@@ -908,6 +908,7 @@
 			this.btnRestoreDefault.TabIndex = 13;
 			this.btnRestoreDefault.Text = "Accept";
 			this.btnRestoreDefault.UseVisualStyleBackColor = true;
+			this.btnRestoreDefault.Click += new System.EventHandler(this.BtnRestoreDefault_Click);
 			// 
 			// btnAccept
 			// 
@@ -927,6 +928,7 @@
 			this.btnCancel.TabIndex = 15;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
+			this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
 			// 
 			// Form1
 			// 

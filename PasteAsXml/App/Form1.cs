@@ -1,5 +1,6 @@
-﻿using FormsPrueba;
-using LanguageToObjectLibrary.Parser.Configuration;
+﻿using LanguageToObjectLibrary.Parser.Configuration;
+using LanguageToObjectLibrary.Parser.Models;
+using PasteAsXml.App;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,15 +18,15 @@ namespace Prueba_extensiones.App
 {
 	public partial class Form1 : Form
 	{
-		private XmlConfiguration starter = new XmlConfiguration();
+		private XmlConfiguration custom = new XmlConfiguration();
 
 		public XmlConfiguration Default { get; set; } = new XmlConfiguration();
-		public XmlConfiguration Starter
+		public XmlConfiguration Custom
 		{
-			get { return starter; }
+			get { return custom; }
 			set
 			{
-				starter = value;
+				custom = value;
 				Current = value;
 			}
 		}
@@ -219,8 +220,8 @@ namespace Prueba_extensiones.App
 		//EVENTOS
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			LoadConfiguration(Starter);
-			Current = (XmlConfiguration)Starter.Clone();
+			Current = (XmlConfiguration)Custom.Clone();
+			LoadConfiguration(Custom);
 		}
 
 		private void btnListAdd_Click(object sender, EventArgs e)
@@ -297,6 +298,20 @@ namespace Prueba_extensiones.App
 		{
 			Current = (XmlConfiguration)Default.Clone();
 			LoadConfiguration(Current);
+		}
+
+		private void BtnRestoreDefault_Click(object sender, EventArgs e)
+		{
+			Custom = Current;
+			DialogResult = DialogResult.OK;
+			this.Close();
+		}
+
+		private void BtnCancel_Click(object sender, EventArgs e)
+		{
+			Current = Custom;
+			DialogResult = DialogResult.Cancel;
+			this.Close();
 		}
 	}
 

@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="App\ComboBoxItem.cs" />
     <Compile Include="App\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +66,7 @@
     <Compile Include="Parser\XmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PasteAsXmlPackage.cs" />
+    <Compile Include="Utils\Utilería.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">
