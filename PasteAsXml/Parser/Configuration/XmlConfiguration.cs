@@ -94,8 +94,8 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		public XmlConfiguration(XmlConfiguration other)
 		{
 			IgnoredAttributes = other.IgnoredAttributes.Select(x => (ElementNameFilter)x.Clone()).ToList();
-			TreatedAsRoot = other.IgnoredAttributes.Select(x => (ElementNameFilter)x.Clone()).ToList();
-			IgnoredClasses = other.IgnoredAttributes.Select(x => (ElementNameFilter)x.Clone()).ToList();
+			TreatedAsRoot = other.TreatedAsRoot.Select(x => (ElementNameFilter)x.Clone()).ToList();
+			IgnoredClasses = other.IgnoredClasses.Select(x => (ElementNameFilter)x.Clone()).ToList();
 			UsedFloatingTypes = other.UsedFloatingTypes;
 			UsedIntegralTypes = other.UsedIntegralTypes;
 			UsedSpecialTypes = other.UsedSpecialTypes;
@@ -130,6 +130,7 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 	{
 		public string Namespace { get; set; }
 		public string Name { get; set; }
+		public string Prefix { get; set; }
 
 		public ElementNameFilter()
 		{
@@ -140,6 +141,7 @@ namespace LanguageToObjectLibrary.Parser.Configuration
 		{
 			Namespace = other.Namespace;
 			Name = other.Name;
+			Prefix = other.Prefix;
 		}
 
 		public object Clone()

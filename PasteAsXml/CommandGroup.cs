@@ -64,8 +64,7 @@ namespace PasteAsXml
             menuCommandID = new CommandID(CommandSet, ConfigCmdId);
             menuItem = new OleMenuCommand(this.ExecuteConfig, menuCommandID);
             commandService.AddCommand(menuItem);
-            menuItem.BeforeQueryStatus += AlwaysOnEvent; ;
-
+            menuItem.BeforeQueryStatus += AlwaysOnEvent;
         }
 
         private void AlwaysOnEvent(object sender, EventArgs e)

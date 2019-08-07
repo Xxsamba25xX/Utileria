@@ -51,13 +51,13 @@
     <Buttons>
       <Button guid="guidPasteAsXmlPackageCmdSet" id="PasterCommandId" priority="0x0100" type="Button">
         <Parent guid="guidPasteAsXmlPackageCmdSet" id="TopMenuGroup" />
+        <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>Paste XML As Classes V2</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidPasteAsXmlPackageCmdSet" id="ConfigCommandId" priority="0x0200" type="Button">
         <Parent guid="guidPasteAsXmlPackageCmdSet" id="TopMenuGroup" />
-        <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>Configure</ButtonText>
         </Strings>

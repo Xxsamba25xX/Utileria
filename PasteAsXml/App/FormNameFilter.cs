@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LanguageToObjectLibrary.Parser.Configuration;
+using PasteAsXml.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,17 +15,18 @@ namespace Prueba_extensiones.App
 {
 	public partial class FormNameFilter : Form
 	{
-		public Regex regexNamespace = new Regex("");
-		public Regex regexName = new Regex("");
-		Regex inside = new Regex(@"^(\/)?(?<inside>.*?)(\/|(?<ignoreCase>\/i))?$", RegexOptions.IgnoreCase);
+		Regex inside = new Regex(EnvironmentVariables.NameFilterFormat, RegexOptions.IgnoreCase);
 
-		public List<(string key, string value)> Regexes { get; set; } = new List<(string key, string value)>();
+		public ElementNameFilter Result { get; private set; } = new ElementNameFilter();
+
+		public List<ElementNameFilter> Filtros { get; set; } = new List<ElementNameFilter>();
 
 		public FormNameFilter()
 		{
 			InitializeComponent();
 			UpdateLabel(lblNamespaceResult, lblNamespaceResult.Parent as FlowLayoutPanel, lblNamespaceResult.Parent.Parent as GroupBox);
 			UpdateLabel(lblNameResult, lblNameResult.Parent as FlowLayoutPanel, lblNameResult.Parent.Parent as GroupBox);
+			UpdateLabel(lblPrefixResult, lblPrefixResult.Parent as FlowLayoutPanel, lblPrefixResult.Parent.Parent as GroupBox);
 		}
 
 		private void txtTextChanged(object sender, EventArgs e)
@@ -32,25 +35,13 @@ namespace Prueba_extensiones.App
 
 			if (box.Enabled == false) return;
 
-			while (true)
-			{
-				var selectionStart = box.SelectionStart;
-				var indexRemoved = box.Text.IndexOf(":");
-				if (indexRemoved == -1) break;
-				box.Enabled = false;
-				box.Text = box.Text.Remove(indexRemoved, 1);
-				box.Enabled = true;
-				box.Focus();
-				box.SelectionStart = Math.Min(selectionStart >= indexRemoved ? selectionStart - 1 : selectionStart, box.Text.Length);
-				box.SelectionLength = 0;
-			}
-
 			UpdateLabel((sender as Control).Parent.Controls.OfType<Label>().First(), (sender as Control).Parent as FlowLayoutPanel, (sender as Control).Parent.Parent as GroupBox);
 		}
 
 		private void CheckedChanged(object sender, EventArgs e)
 		{
-			Label label = (sender as Control).Parent == grpNamespace ? lblNamespaceResult : lblNameResult;
+			Control parent = (sender as Control).Parent;
+			Label label = parent == grpNamespace ? lblNamespaceResult : parent == grpPrefix ? lblPrefixResult : lblNameResult;
 			UpdateLabel(label, label.Parent as FlowLayoutPanel, (sender as Control).Parent as GroupBox);
 		}
 
@@ -79,11 +70,13 @@ namespace Prueba_extensiones.App
 					break;
 				case txtType.Regex:
 					strLabel.Append(textBox.Text);
+					strLabel.Replace(":", "[:]");
 					break;
 				default:
 					strLabel.Append(".*?");
 					break;
 			}
+
 
 			if (anchored)
 			{
@@ -123,22 +116,36 @@ namespace Prueba_extensiones.App
 
 		private bool valuateRegexes()
 		{
+			Regex validator = null;
 			try
 			{
 				Match namespaceMatch = inside.Match(lblNamespaceResult.Text);
 				bool ignoreCase = namespaceMatch.Groups["ignoreCase"].Success;
-				regexNamespace = new Regex(namespaceMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
+				validator = new Regex(namespaceMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
 			}
 			catch (Exception)
 			{
 				MessageBox.Show("Hubo un error al validar el Regex Namespace, revisalo bien.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
 			}
+
+			try
+			{
+				Match namespaceMatch = inside.Match(lblPrefixResult.Text);
+				bool ignoreCase = namespaceMatch.Groups["ignoreCase"].Success;
+				validator = new Regex(namespaceMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Hubo un error al validar el Regex Prefix, revisalo bien.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+
 			try
 			{
 				Match nameMatch = inside.Match(lblNameResult.Text);
 				bool ignoreCase = nameMatch.Groups["ignoreCase"].Success;
-				regexName = new Regex(nameMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
+				validator = new Regex(nameMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
 			}
 			catch (Exception)
 			{
@@ -146,11 +153,13 @@ namespace Prueba_extensiones.App
 				return false;
 			}
 
-			if (Regexes.Any(x => x.key == lblNamespaceResult.Text && x.value == lblNameResult.Text))
+			if (Filtros.Any(x => x.Namespace == lblNamespaceResult.Text && x.Prefix == lblPrefixResult.Text && x.Name == lblNameResult.Text))
 			{
-				MessageBox.Show("Ya se ha ingresado un Regex igual.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Ya se ha ingresado un Filtro igual.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
 			}
+
+
 
 			return true;
 		}
@@ -160,6 +169,9 @@ namespace Prueba_extensiones.App
 			if (valuateRegexes())
 			{
 				DialogResult = DialogResult.OK;
+				Result.Name = lblNameResult.Text;
+				Result.Prefix= lblPrefixResult.Text;
+				Result.Namespace = lblNamespaceResult.Text;
 				this.Close();
 			}
 			else
@@ -170,8 +182,7 @@ namespace Prueba_extensiones.App
 
 		private void ButtonCancel_Click(object sender, EventArgs e)
 		{
-			regexName = null;
-			regexNamespace = null;
+			Result = new ElementNameFilter();
 			DialogResult = DialogResult.Cancel;
 			this.Close();
 		}

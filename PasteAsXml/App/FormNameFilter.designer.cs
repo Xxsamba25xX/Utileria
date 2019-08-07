@@ -30,6 +30,7 @@
 		{
 			this.label3 = new System.Windows.Forms.Label();
 			this.grpNamespace = new System.Windows.Forms.GroupBox();
+			this.chkNamespaceCaseSensitive = new System.Windows.Forms.CheckBox();
 			this.rdNamespaceRegex = new System.Windows.Forms.RadioButton();
 			this.chkNamespaceAnchored = new System.Windows.Forms.CheckBox();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -37,7 +38,8 @@
 			this.lblNamespaceResult = new System.Windows.Forms.Label();
 			this.rdNamespaceText = new System.Windows.Forms.RadioButton();
 			this.rdNamespaceAny = new System.Windows.Forms.RadioButton();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.grpName = new System.Windows.Forms.GroupBox();
+			this.chkNameCaseSensitive = new System.Windows.Forms.CheckBox();
 			this.rdNameRegex = new System.Windows.Forms.RadioButton();
 			this.chkNameAnchored = new System.Windows.Forms.CheckBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -47,19 +49,29 @@
 			this.chkNameAny = new System.Windows.Forms.RadioButton();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.chkNameCaseSensitive = new System.Windows.Forms.CheckBox();
-			this.chkNamespaceCaseSensitive = new System.Windows.Forms.CheckBox();
+			this.grpPrefix = new System.Windows.Forms.GroupBox();
+			this.chkPrefixCaseSensitive = new System.Windows.Forms.CheckBox();
+			this.rdPrefixRegex = new System.Windows.Forms.RadioButton();
+			this.chkPrefixAnchored = new System.Windows.Forms.CheckBox();
+			this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+			this.txtPrefix = new System.Windows.Forms.TextBox();
+			this.lblPrefixResult = new System.Windows.Forms.Label();
+			this.rdPrefixText = new System.Windows.Forms.RadioButton();
+			this.rdPrefixAny = new System.Windows.Forms.RadioButton();
+			this.label2 = new System.Windows.Forms.Label();
 			this.grpNamespace.SuspendLayout();
 			this.flowLayoutPanel2.SuspendLayout();
-			this.groupBox2.SuspendLayout();
+			this.grpName.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
+			this.grpPrefix.SuspendLayout();
+			this.flowLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(229, 106);
+			this.label3.Location = new System.Drawing.Point(443, 106);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(19, 25);
 			this.label3.TabIndex = 2;
@@ -75,12 +87,23 @@
 			this.grpNamespace.Controls.Add(this.flowLayoutPanel2);
 			this.grpNamespace.Controls.Add(this.rdNamespaceText);
 			this.grpNamespace.Controls.Add(this.rdNamespaceAny);
-			this.grpNamespace.Location = new System.Drawing.Point(26, 12);
+			this.grpNamespace.Location = new System.Drawing.Point(12, 12);
 			this.grpNamespace.Name = "grpNamespace";
 			this.grpNamespace.Size = new System.Drawing.Size(197, 208);
 			this.grpNamespace.TabIndex = 3;
 			this.grpNamespace.TabStop = false;
 			this.grpNamespace.Text = "Namespace";
+			// 
+			// chkNamespaceCaseSensitive
+			// 
+			this.chkNamespaceCaseSensitive.AutoSize = true;
+			this.chkNamespaceCaseSensitive.Location = new System.Drawing.Point(6, 172);
+			this.chkNamespaceCaseSensitive.Name = "chkNamespaceCaseSensitive";
+			this.chkNamespaceCaseSensitive.Size = new System.Drawing.Size(96, 17);
+			this.chkNamespaceCaseSensitive.TabIndex = 6;
+			this.chkNamespaceCaseSensitive.Text = "Case Sensitive";
+			this.chkNamespaceCaseSensitive.UseVisualStyleBackColor = true;
+			this.chkNamespaceCaseSensitive.CheckedChanged += new System.EventHandler(this.CheckedChanged);
 			// 
 			// rdNamespaceRegex
 			// 
@@ -159,22 +182,33 @@
 			this.rdNamespaceAny.UseVisualStyleBackColor = true;
 			this.rdNamespaceAny.CheckedChanged += new System.EventHandler(this.CheckedChanged);
 			// 
-			// groupBox2
+			// grpName
 			// 
-			this.groupBox2.AutoSize = true;
-			this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.groupBox2.Controls.Add(this.chkNameCaseSensitive);
-			this.groupBox2.Controls.Add(this.rdNameRegex);
-			this.groupBox2.Controls.Add(this.chkNameAnchored);
-			this.groupBox2.Controls.Add(this.flowLayoutPanel1);
-			this.groupBox2.Controls.Add(this.chkNameText);
-			this.groupBox2.Controls.Add(this.chkNameAny);
-			this.groupBox2.Location = new System.Drawing.Point(254, 12);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(197, 208);
-			this.groupBox2.TabIndex = 4;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Name";
+			this.grpName.AutoSize = true;
+			this.grpName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.grpName.Controls.Add(this.chkNameCaseSensitive);
+			this.grpName.Controls.Add(this.rdNameRegex);
+			this.grpName.Controls.Add(this.chkNameAnchored);
+			this.grpName.Controls.Add(this.flowLayoutPanel1);
+			this.grpName.Controls.Add(this.chkNameText);
+			this.grpName.Controls.Add(this.chkNameAny);
+			this.grpName.Location = new System.Drawing.Point(468, 12);
+			this.grpName.Name = "grpName";
+			this.grpName.Size = new System.Drawing.Size(197, 208);
+			this.grpName.TabIndex = 4;
+			this.grpName.TabStop = false;
+			this.grpName.Text = "Name";
+			// 
+			// chkNameCaseSensitive
+			// 
+			this.chkNameCaseSensitive.AutoSize = true;
+			this.chkNameCaseSensitive.Location = new System.Drawing.Point(6, 172);
+			this.chkNameCaseSensitive.Name = "chkNameCaseSensitive";
+			this.chkNameCaseSensitive.Size = new System.Drawing.Size(96, 17);
+			this.chkNameCaseSensitive.TabIndex = 15;
+			this.chkNameCaseSensitive.Text = "Case Sensitive";
+			this.chkNameCaseSensitive.UseVisualStyleBackColor = true;
+			this.chkNameCaseSensitive.CheckedChanged += new System.EventHandler(this.CheckedChanged);
 			// 
 			// rdNameRegex
 			// 
@@ -255,7 +289,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(376, 226);
+			this.button1.Location = new System.Drawing.Point(590, 226);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 6;
@@ -265,7 +299,7 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(26, 226);
+			this.button2.Location = new System.Drawing.Point(12, 226);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);
 			this.button2.TabIndex = 7;
@@ -273,39 +307,132 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.ButtonCancel_Click);
 			// 
-			// chkNameCaseSensitive
+			// grpPrefix
 			// 
-			this.chkNameCaseSensitive.AutoSize = true;
-			this.chkNameCaseSensitive.Location = new System.Drawing.Point(6, 172);
-			this.chkNameCaseSensitive.Name = "chkNameCaseSensitive";
-			this.chkNameCaseSensitive.Size = new System.Drawing.Size(96, 17);
-			this.chkNameCaseSensitive.TabIndex = 15;
-			this.chkNameCaseSensitive.Text = "Case Sensitive";
-			this.chkNameCaseSensitive.UseVisualStyleBackColor = true;
-			this.chkNameCaseSensitive.Visible = false;
-			this.chkNameCaseSensitive.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			this.grpPrefix.AutoSize = true;
+			this.grpPrefix.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.grpPrefix.Controls.Add(this.chkPrefixCaseSensitive);
+			this.grpPrefix.Controls.Add(this.rdPrefixRegex);
+			this.grpPrefix.Controls.Add(this.chkPrefixAnchored);
+			this.grpPrefix.Controls.Add(this.flowLayoutPanel3);
+			this.grpPrefix.Controls.Add(this.rdPrefixText);
+			this.grpPrefix.Controls.Add(this.rdPrefixAny);
+			this.grpPrefix.Location = new System.Drawing.Point(240, 12);
+			this.grpPrefix.Name = "grpPrefix";
+			this.grpPrefix.Size = new System.Drawing.Size(197, 208);
+			this.grpPrefix.TabIndex = 3;
+			this.grpPrefix.TabStop = false;
+			this.grpPrefix.Text = "Prefix";
 			// 
-			// chkNamespaceCaseSensitive
+			// chkPrefixCaseSensitive
 			// 
-			this.chkNamespaceCaseSensitive.AutoSize = true;
-			this.chkNamespaceCaseSensitive.Location = new System.Drawing.Point(6, 172);
-			this.chkNamespaceCaseSensitive.Name = "chkNamespaceCaseSensitive";
-			this.chkNamespaceCaseSensitive.Size = new System.Drawing.Size(96, 17);
-			this.chkNamespaceCaseSensitive.TabIndex = 6;
-			this.chkNamespaceCaseSensitive.Text = "Case Sensitive";
-			this.chkNamespaceCaseSensitive.UseVisualStyleBackColor = true;
-			this.chkNamespaceCaseSensitive.Visible = false;
-			this.chkNamespaceCaseSensitive.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			this.chkPrefixCaseSensitive.AutoSize = true;
+			this.chkPrefixCaseSensitive.Location = new System.Drawing.Point(6, 172);
+			this.chkPrefixCaseSensitive.Name = "chkPrefixCaseSensitive";
+			this.chkPrefixCaseSensitive.Size = new System.Drawing.Size(96, 17);
+			this.chkPrefixCaseSensitive.TabIndex = 6;
+			this.chkPrefixCaseSensitive.Text = "Case Sensitive";
+			this.chkPrefixCaseSensitive.UseVisualStyleBackColor = true;
+			this.chkPrefixCaseSensitive.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			// 
+			// rdPrefixRegex
+			// 
+			this.rdPrefixRegex.AutoSize = true;
+			this.rdPrefixRegex.Location = new System.Drawing.Point(6, 68);
+			this.rdPrefixRegex.Name = "rdPrefixRegex";
+			this.rdPrefixRegex.Size = new System.Drawing.Size(56, 17);
+			this.rdPrefixRegex.TabIndex = 12;
+			this.rdPrefixRegex.Text = "Regex";
+			this.rdPrefixRegex.UseVisualStyleBackColor = true;
+			this.rdPrefixRegex.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			// 
+			// chkPrefixAnchored
+			// 
+			this.chkPrefixAnchored.AutoSize = true;
+			this.chkPrefixAnchored.Location = new System.Drawing.Point(6, 149);
+			this.chkPrefixAnchored.Name = "chkPrefixAnchored";
+			this.chkPrefixAnchored.Size = new System.Drawing.Size(72, 17);
+			this.chkPrefixAnchored.TabIndex = 5;
+			this.chkPrefixAnchored.Text = "Anchored";
+			this.chkPrefixAnchored.UseVisualStyleBackColor = true;
+			this.chkPrefixAnchored.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			// 
+			// flowLayoutPanel3
+			// 
+			this.flowLayoutPanel3.AutoSize = true;
+			this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.flowLayoutPanel3.Controls.Add(this.txtPrefix);
+			this.flowLayoutPanel3.Controls.Add(this.lblPrefixResult);
+			this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flowLayoutPanel3.Location = new System.Drawing.Point(6, 91);
+			this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+			this.flowLayoutPanel3.Size = new System.Drawing.Size(185, 52);
+			this.flowLayoutPanel3.TabIndex = 13;
+			// 
+			// txtPrefix
+			// 
+			this.txtPrefix.Location = new System.Drawing.Point(3, 3);
+			this.txtPrefix.Name = "txtPrefix";
+			this.txtPrefix.Size = new System.Drawing.Size(179, 20);
+			this.txtPrefix.TabIndex = 0;
+			this.txtPrefix.TextChanged += new System.EventHandler(this.txtTextChanged);
+			// 
+			// lblPrefixResult
+			// 
+			this.lblPrefixResult.AutoSize = true;
+			this.lblPrefixResult.Location = new System.Drawing.Point(3, 29);
+			this.lblPrefixResult.Margin = new System.Windows.Forms.Padding(3);
+			this.lblPrefixResult.MinimumSize = new System.Drawing.Size(0, 20);
+			this.lblPrefixResult.Name = "lblPrefixResult";
+			this.lblPrefixResult.Size = new System.Drawing.Size(0, 20);
+			this.lblPrefixResult.TabIndex = 2;
+			this.lblPrefixResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// rdPrefixText
+			// 
+			this.rdPrefixText.AutoSize = true;
+			this.rdPrefixText.Location = new System.Drawing.Point(6, 45);
+			this.rdPrefixText.Name = "rdPrefixText";
+			this.rdPrefixText.Size = new System.Drawing.Size(46, 17);
+			this.rdPrefixText.TabIndex = 11;
+			this.rdPrefixText.Text = "Text";
+			this.rdPrefixText.UseVisualStyleBackColor = true;
+			this.rdPrefixText.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			// 
+			// rdPrefixAny
+			// 
+			this.rdPrefixAny.AutoSize = true;
+			this.rdPrefixAny.Checked = true;
+			this.rdPrefixAny.Location = new System.Drawing.Point(6, 22);
+			this.rdPrefixAny.Name = "rdPrefixAny";
+			this.rdPrefixAny.Size = new System.Drawing.Size(43, 17);
+			this.rdPrefixAny.TabIndex = 10;
+			this.rdPrefixAny.TabStop = true;
+			this.rdPrefixAny.Text = "Any";
+			this.rdPrefixAny.UseVisualStyleBackColor = true;
+			this.rdPrefixAny.CheckedChanged += new System.EventHandler(this.CheckedChanged);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label2.Location = new System.Drawing.Point(215, 106);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(19, 25);
+			this.label2.TabIndex = 2;
+			this.label2.Text = ":";
 			// 
 			// FormNameFilter
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(460, 259);
+			this.ClientSize = new System.Drawing.Size(676, 259);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
-			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.grpName);
+			this.Controls.Add(this.grpPrefix);
 			this.Controls.Add(this.grpNamespace);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label3);
 			this.Name = "FormNameFilter";
 			this.Text = "FormNameFilter";
@@ -313,10 +440,14 @@
 			this.grpNamespace.PerformLayout();
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.flowLayoutPanel2.PerformLayout();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
+			this.grpName.ResumeLayout(false);
+			this.grpName.PerformLayout();
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel1.PerformLayout();
+			this.grpPrefix.ResumeLayout(false);
+			this.grpPrefix.PerformLayout();
+			this.flowLayoutPanel3.ResumeLayout(false);
+			this.flowLayoutPanel3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -333,7 +464,7 @@
 		private System.Windows.Forms.Label lblNamespaceResult;
 		private System.Windows.Forms.RadioButton rdNamespaceText;
 		private System.Windows.Forms.RadioButton rdNamespaceAny;
-		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox grpName;
 		private System.Windows.Forms.RadioButton rdNameRegex;
 		private System.Windows.Forms.CheckBox chkNameAnchored;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -345,5 +476,15 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.CheckBox chkNamespaceCaseSensitive;
 		private System.Windows.Forms.CheckBox chkNameCaseSensitive;
+		private System.Windows.Forms.GroupBox grpPrefix;
+		private System.Windows.Forms.CheckBox chkPrefixCaseSensitive;
+		private System.Windows.Forms.RadioButton rdPrefixRegex;
+		private System.Windows.Forms.CheckBox chkPrefixAnchored;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+		private System.Windows.Forms.TextBox txtPrefix;
+		private System.Windows.Forms.Label lblPrefixResult;
+		private System.Windows.Forms.RadioButton rdPrefixText;
+		private System.Windows.Forms.RadioButton rdPrefixAny;
+		private System.Windows.Forms.Label label2;
 	}
 }
