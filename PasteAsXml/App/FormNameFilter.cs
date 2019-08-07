@@ -136,7 +136,7 @@ namespace Prueba_extensiones.App
 			}
 			try
 			{
-				Match nameMatch = inside.Match(lblNamespaceResult.Text);
+				Match nameMatch = inside.Match(lblNameResult.Text);
 				bool ignoreCase = nameMatch.Groups["ignoreCase"].Success;
 				regexName = new Regex(nameMatch.Value, ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
 			}

@@ -79,7 +79,7 @@ namespace LanguageToObjectLibrary.Parser
                         sb.Append(GetTab(level)).AppendLine(decorator);
                     }
                     var elementName = (Configuration.HideName && classItem.Name == classItem.ShowName ? "" : $"ElementName =\"{classItem.Name}\"");
-                    var hasElementName = string.IsNullOrWhiteSpace(elementName);
+                    var hasElementName = !string.IsNullOrWhiteSpace(elementName);
                     sb.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlRootAttribute({elementName}{(hasElementName ? "," : "")} Namespace = \"{classItem.Namespace}\", IsNullable = false)]");
                 }
                 else
@@ -514,6 +514,7 @@ namespace LanguageToObjectLibrary.Parser
         {
             Stack<(XmlNode node, GeneratedClass element)> nodeStack = new Stack<(XmlNode node, GeneratedClass element)>();
             XmlDocument doc = new XmlDocument();
+
             doc.LoadXml(xmlAsString);
 
             nodeStack.Push((doc, Document));
@@ -534,6 +535,9 @@ namespace LanguageToObjectLibrary.Parser
 
                 foreach (var groupedNode in lastStackedElement.node.ChildNodes.ToList().GroupBy(x => $"{x.NamespaceURI}:{x.LocalName}"))
                 {
+                    if (Configuration.IgnoredClasses.Any(x => Regex.IsMatch(groupedNode.First().NamespaceURI, x.Namespace) && Regex.IsMatch(groupedNode.First().LocalName, x.Name)))
+                        continue;
+
                     bool isArray = groupedNode.Count() > 1;
                     var childNode = groupedNode.First();
 
@@ -559,6 +563,7 @@ namespace LanguageToObjectLibrary.Parser
                         }
                         else
                         {
+
                             processedClass = processNode(lastStackedElement, itemInGroup, isArray);
                             nodeStack.Push((itemInGroup, processedClass));
                         }
