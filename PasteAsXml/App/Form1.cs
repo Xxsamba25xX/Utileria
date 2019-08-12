@@ -32,6 +32,7 @@ namespace Prueba_extensiones.App
 		}
 
 		XmlConfiguration Current { get; set; } = new XmlConfiguration();
+		public string FilterMatch => @"^(?<namespace>([^\:\[\]]|([\[]([^\[\]])*[\]]))*)([:])(?<prefix>([^\:\[\]]|([\[]([^\[\]])*[\]]))*)([:])(?<name>([^\:\[\]]|([\[]([^\[\]])*[\]]))*)$";
 
 		public Form1()
 		{
@@ -178,18 +179,20 @@ namespace Prueba_extensiones.App
 			{
 				foreach (string item in listBoxes[i].listBox.Items)
 				{
-					Match match = Regex.Match(item, @"^(?<namespace>((\[[:]\])|[^:\s])*?)(?<separator>[:])(?<name>((\[[:]\])|[^:\s])*?)$");
+					Match match = Regex.Match(item, FilterMatch);
 					if (match.Success)
 					{
 						listBoxes[i].configList.Add(new ElementNameFilter()
 						{
 							Namespace = match.Groups["namespace"].Value,
+							Prefix = match.Groups["prefix"].Value,
 							Name = match.Groups["name"].Value
 						});
 					}
 				}
 			}
 		}
+
 		private void LoadFilters(XmlConfiguration configuration)
 		{
 			if (configuration.IgnoredAttributes == null)
@@ -208,10 +211,11 @@ namespace Prueba_extensiones.App
 
 			for (int i = 0; i < listBoxes.Count; i++)
 			{
+				listBoxes[i].listBox.Items.Clear();
 				foreach (var item in listBoxes[i].configList)
 				{
-					var cadena = $"{item.Namespace}:{item.Name}";
-					Match match = Regex.Match(cadena, @"^(?<namespace>((\[[:]\])|[^:\s])*?)(?<separator>[:])(?<name>((\[[:]\])|[^:\s])*?)$");
+					var cadena = $"{item.Namespace}:{item.Prefix}:{item.Name}";
+					Match match = Regex.Match(cadena, FilterMatch);
 					if (match.Success)
 					{
 						listBoxes[i].listBox.Items.Add(cadena);
@@ -260,7 +264,7 @@ namespace Prueba_extensiones.App
 			{
 				foreach (string item in listBox.Items)
 				{
-					Match match = Regex.Match(item, @"(?<namespace>((\[[:]\])|[^:\s]))(?<separator1>[:])(?<prefix>((\[[:]\])|[^:\s]))(?<separator2>[:])(?<name>((\[[:]\])|[^:\s]))");
+					Match match = Regex.Match(item, FilterMatch);
 					if (match.Success)
 					{
 						dialog.Filtros.Add(new ElementNameFilter

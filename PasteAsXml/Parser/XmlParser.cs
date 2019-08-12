@@ -31,7 +31,12 @@ namespace LanguageToObjectLibrary.Parser
 
 		public string GetClasses(string xmlAsString)
 		{
+			Classes = new Dictionary<string, GeneratedClass>();
+			Document = new GeneratedClass();
+
+			DateTime t = DateTime.Now;
 			ProcessXml(xmlAsString);
+			string strT = ((DateTime.Now - t).TotalMilliseconds).ToString();
 			FixClasses();
 			var stringifiedClasses = ClassesToString();
 			string prueba1 = GenerateCSharpDocument(stringifiedClasses);
@@ -220,7 +225,7 @@ namespace LanguageToObjectLibrary.Parser
 				properties.Add(property.ToString());
 			}
 
-			return (string.Join("\n", fields), string.Join("\n", properties));
+			return (string.Join("\n", fields).Trim(), string.Join("\n", properties).Trim());
 		}
 
 		private (string field, string property) PropertiesAsString(int level, Dictionary<string, GeneratedChild> childs, GeneratedClass classItem)
@@ -276,7 +281,8 @@ namespace LanguageToObjectLibrary.Parser
 					var elementCommaNamespace = string.IsNullOrWhiteSpace(elementName) || string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
 					var commaNullable = string.IsNullOrWhiteSpace(elementName) && string.IsNullOrWhiteSpace(namespaceStr) ? "" : ", ";
 
-					property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlElementAttribute({elementName}{elementCommaNamespace}{namespaceStr}{commaNullable}IsNullable = false)]");
+					if (!string.IsNullOrWhiteSpace(elementName) || !string.IsNullOrWhiteSpace(namespaceStr))
+						property.Append(GetTab(level)).AppendLine($"[System.Xml.Serialization.XmlElementAttribute({elementName}{elementCommaNamespace}{namespaceStr}{commaNullable}IsNullable = false)]");
 				}
 				else
 				{
@@ -286,7 +292,7 @@ namespace LanguageToObjectLibrary.Parser
 					var lastClassFirstChild = lastClass.Childs.First().Value;
 					type = lastClassFirstChild.Type.ShowName;
 
-					if (IsLeafClass(lastClassFirstChild.Type) && !Configuration.PropertiesAsClasses)
+					if (IsLeafClass(lastClassFirstChild.Type) && (!Configuration.PropertiesAsClasses || lastClassFirstChild.Type.Value.Type == "object"))
 					{
 						type = lastClassFirstChild.Type.Value.Type;
 						child.Type = null;
@@ -357,7 +363,7 @@ namespace LanguageToObjectLibrary.Parser
 				properties.Add(property.ToString());
 			}
 
-			return (string.Join("\n", fields), string.Join("\n", properties));
+			return (string.Join("\n", fields).Trim(), string.Join("\n", properties).Trim());
 		}
 
 		private string Arrange(string type, int depth)
@@ -427,6 +433,7 @@ namespace LanguageToObjectLibrary.Parser
 					bool hasValue = classItem.Value.Value != null;
 					bool hasAttributes = classItem.Value.Attributes?.Count > 0;
 					bool isValueObject = hasValue && classItem.Value.Value.Type == "object";
+
 					if (hasChilds)
 					{
 						if (isValueObject)
@@ -447,6 +454,17 @@ namespace LanguageToObjectLibrary.Parser
 							} while (classItem.Value.Childs.Values.Any(x => x.Id != childItem.Id && x.ShowName == childItem.ShowName));
 						}
 					}
+
+					if (hasValue && !hasChilds && hasAttributes)
+					{
+						//Si la clase tiene Attributes y un value object, quitar el value
+						if (isValueObject)
+						{
+							classItem.Value.Value = null;
+							hasValue = false;
+						}
+					}
+
 					if (hasValue)
 					{
 						//Value Showname fix
@@ -458,6 +476,7 @@ namespace LanguageToObjectLibrary.Parser
 						} while ((hasChilds && classItem.Value.Childs.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName))
 								  || (hasAttributes && classItem.Value.Attributes.Any(x => x.Value.ShowName == classItem.Value.Value.ShowName)));
 					}
+
 					if (hasAttributes)
 					{
 						//Attr Showname fix
@@ -471,7 +490,8 @@ namespace LanguageToObjectLibrary.Parser
 							} while (hasChilds && classItem.Value.Childs.Any(x => x.Value.ShowName == attr.ShowName));
 						}
 					}
-					if (!hasChilds && !hasAttributes && hasValue && !Configuration.PropertiesAsClasses)
+
+					if (!hasChilds && !hasAttributes && hasValue && (!Configuration.PropertiesAsClasses || isValueObject))
 					{
 						//Borrar de Classes los nodos valor, Si la configuración lo desea
 						idsToRemove.Add(classItem.Key);
@@ -536,8 +556,8 @@ namespace LanguageToObjectLibrary.Parser
 				foreach (var groupedNode in lastStackedElement.node.ChildNodes.ToList().GroupBy(x => $"{x.NamespaceURI}:{x.LocalName}"))
 				{
 					var firstElement = groupedNode.First();
-					if (IsElementFiltered(Configuration.IgnoredClasses, firstElement.NamespaceURI, firstElement.Prefix, firstElement.LocalName))
-						continue;
+					//if (IsElementFiltered(Configuration.IgnoredClasses, firstElement.NamespaceURI, firstElement.Prefix, firstElement.LocalName))
+					//continue;
 
 					bool isArray = groupedNode.Count() > 1;
 					var childNode = groupedNode.First();

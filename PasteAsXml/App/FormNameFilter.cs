@@ -63,14 +63,13 @@ namespace Prueba_extensiones.App
 			switch (rdType)
 			{
 				case txtType.Any:
-					strLabel.Append(".*?");
+					strLabel.Append(".*");
 					break;
 				case txtType.Text:
 					strLabel.Append(GetText(textBox.Text));
 					break;
 				case txtType.Regex:
 					strLabel.Append(textBox.Text);
-					strLabel.Replace(":", "[:]");
 					break;
 				default:
 					strLabel.Append(".*?");
@@ -89,7 +88,8 @@ namespace Prueba_extensiones.App
 				strLabel.Insert(0, "/");
 				strLabel.Append("/i");
 			}
-			me.Text = strLabel.ToString();
+
+			me.Text = Regex.Replace(strLabel.ToString(), @"([\[])?(?<inside>([^\[\]]*)[:]([^\[\]]*))([\]])?", (x) => { return $"[{x.Groups["inside"].Value}]"; });
 		}
 
 		private string GetText(string text)
@@ -170,7 +170,7 @@ namespace Prueba_extensiones.App
 			{
 				DialogResult = DialogResult.OK;
 				Result.Name = lblNameResult.Text;
-				Result.Prefix= lblPrefixResult.Text;
+				Result.Prefix = lblPrefixResult.Text;
 				Result.Namespace = lblNamespaceResult.Text;
 				this.Close();
 			}

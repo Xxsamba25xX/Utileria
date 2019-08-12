@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label3 = new System.Windows.Forms.Label();
 			this.grpNamespace = new System.Windows.Forms.GroupBox();
 			this.chkNamespaceCaseSensitive = new System.Windows.Forms.CheckBox();
 			this.rdNamespaceRegex = new System.Windows.Forms.RadioButton();
@@ -58,7 +57,6 @@
 			this.lblPrefixResult = new System.Windows.Forms.Label();
 			this.rdPrefixText = new System.Windows.Forms.RadioButton();
 			this.rdPrefixAny = new System.Windows.Forms.RadioButton();
-			this.label2 = new System.Windows.Forms.Label();
 			this.grpNamespace.SuspendLayout();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.grpName.SuspendLayout();
@@ -66,16 +64,6 @@
 			this.grpPrefix.SuspendLayout();
 			this.flowLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(443, 106);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(19, 25);
-			this.label3.TabIndex = 2;
-			this.label3.Text = ":";
 			// 
 			// grpNamespace
 			// 
@@ -412,16 +400,6 @@
 			this.rdPrefixAny.UseVisualStyleBackColor = true;
 			this.rdPrefixAny.CheckedChanged += new System.EventHandler(this.CheckedChanged);
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(215, 106);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(19, 25);
-			this.label2.TabIndex = 2;
-			this.label2.Text = ":";
-			// 
 			// FormNameFilter
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,8 +410,6 @@
 			this.Controls.Add(this.grpName);
 			this.Controls.Add(this.grpPrefix);
 			this.Controls.Add(this.grpNamespace);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label3);
 			this.Name = "FormNameFilter";
 			this.Text = "FormNameFilter";
 			this.grpNamespace.ResumeLayout(false);
@@ -454,8 +430,6 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.GroupBox grpNamespace;
 		private System.Windows.Forms.RadioButton rdNamespaceRegex;
 		private System.Windows.Forms.CheckBox chkNamespaceAnchored;
@@ -485,6 +459,5 @@
 		private System.Windows.Forms.Label lblPrefixResult;
 		private System.Windows.Forms.RadioButton rdPrefixText;
 		private System.Windows.Forms.RadioButton rdPrefixAny;
-		private System.Windows.Forms.Label label2;
 	}
 }

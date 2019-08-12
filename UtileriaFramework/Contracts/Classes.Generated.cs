@@ -1,56 +1,70 @@
 namespace tuvi
 {
-    [System.Xml.Serialization.XmlRootAttribute(ElementName = "a", Namespace = "", IsNullable = false)]
-    public partial class A
-    {
+
+	// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+	/// <remarks/>
+	[System.SerializableAttribute()]
+	[System.ComponentModel.DesignerCategoryAttribute("code")]
+	[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+	public partial class a: s
+	{
+
+		private string[] bField;
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlElementAttribute("b")]
+		public string[] b
+		{
+			get
+			{
+				return this.bField;
+			}
+			set
+			{
+				this.bField = value;
+			}
+		}
+	}
 
 
-        [System.Xml.Serialization.XmlElementAttribute(ElementName = "b", Namespace = "", IsNullable = false)]
-        public B[] B { get; set; }
+	// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+	/// <remarks/>
+	[System.SerializableAttribute()]
+	[System.ComponentModel.DesignerCategoryAttribute("code")]
+	[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+	public partial class c: s
+	{
 
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value { get; set; }
+		private string[] bField;
 
-    }
-
-    public partial class B
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute(ElementName = "c", Namespace = "", IsNullable = false)]
-        public C[] C { get; set; }
-
-    }
-
-    public partial class C
-    {
-
-        [System.Xml.Serialization.XmlElementAttribute(ElementName = "e", Namespace = "", IsNullable = false)]
-        public E[] E { get; set; }
-
-    }
-
-    public partial class E
-    {
-
-
-        [System.Xml.Serialization.XmlElementAttribute(ElementName = "d", Namespace = "", IsNullable = false)]
-        public D[] D { get; set; }
-
-        [System.Xml.Serialization.XmlAttributeAttribute(AttributeName = "aux", Namespace = "")]
-        public string Aux { get; set; }
-
-    }
-
-    public partial class D
-    {
+		/// <remarks/>
+		[System.Xml.Serialization.XmlElementAttribute("b")]
+		public string[] b
+		{
+			get
+			{
+				return this.bField;
+			}
+			set
+			{
+				this.bField = value;
+			}
+		}
+	}
 
 
-        [System.Xml.Serialization.XmlAttributeAttribute(AttributeName = "aux", Namespace = "")]
-        public string Aux { get; set; }
+	// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+	/// <remarks/>
+	[System.SerializableAttribute()]
+	[System.ComponentModel.DesignerCategoryAttribute("code")]
+	[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+	public partial class s
+	{
 
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value { get; set; }
+	}
 
-    }
 
 }
