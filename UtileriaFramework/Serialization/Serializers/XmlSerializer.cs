@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace Serializers
+namespace UtileriaFramework.Serialization.Serializers
 {
 	public class XmlSerializer
 	{
@@ -55,7 +55,7 @@ namespace Serializers
 		{
 			if (string.IsNullOrEmpty(buffer))
 			{
-				return default(T);
+				return default;
 			}
 
 			System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));

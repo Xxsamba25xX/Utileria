@@ -47,24 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\Classes.Generated.cs" />
-    <Compile Include="Contracts\Json\Json.Generated.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="ObjectUtils\CharUtils.cs" />
+    <Compile Include="FileUtils\FileUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\XmlSerializer.cs" />
-    <Compile Include="Utils\MatrixGenerator.cs" />
+    <Compile Include="Serialization\Json\JsonSerializationUtil.cs" />
+    <Compile Include="Serialization\Json\Serializable.Generated.cs" />
+    <Compile Include="Serialization\Xml\Deserializable.Generated.cs" />
+    <Compile Include="Serialization\Xml\Serializable.Generated.cs" />
+    <Compile Include="Serialization\Xml\XmlSerializationUtil.cs" />
+    <Compile Include="Serialization\Serializers\XmlSerializer.cs" />
+    <Compile Include="Utileria\Utilería.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="file">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="fileJson">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-    <None Include="xmlConfiguration">
+    <Compile Include="Serialization\Json\Deserializable.Generated.cs" />
+    <None Include="Serialization\Json\serializable.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Serialization\Json\deserializable.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -73,6 +74,20 @@
       <Project>{ab8dd506-186c-4884-8306-43969cc84041}</Project>
       <Name>LanguageToObjectLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FileUtils\Content.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FileUtils\file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Serialization\Xml\deserializable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Serialization\Xml\serializable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

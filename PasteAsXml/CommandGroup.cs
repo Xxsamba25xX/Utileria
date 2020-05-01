@@ -178,6 +178,7 @@ namespace PasteAsXml
 				Custom = configs.user
 			};
 			form.Text = "Configuration";
+			var _dte = GetDTE();
 			form.ShowDialog();
 			if (form.DialogResult == System.Windows.Forms.DialogResult.OK)
 			{
