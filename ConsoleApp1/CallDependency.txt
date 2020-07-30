@@ -1,0 +1,5 @@
+﻿List<$tipo> list$clase = _$claseLowerService.ListIdsBy$padreId(model.Id);
+            foreach (var $claseLower in list$clase)
+            {
+                _eliminarDependencias$claseUseCase.Execute(new IdModelWithHistory<$tipo>($claseLower, model.CallsHistory));
+            }

@@ -1,0 +1,5 @@
+﻿List<$nombreHijo> list$nombreHijo = _$minusNombreHijoService.ListBy$nombrePadreId(model.Id);
+            foreach (var item in list$nombreHijo)
+            {
+                _$minusNombreHijoService.Delete(item);
+            }

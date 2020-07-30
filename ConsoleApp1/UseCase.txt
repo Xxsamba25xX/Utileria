@@ -1,0 +1,38 @@
+﻿using NegotisPersistence.Entity;
+using NegotisService.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+$Using
+
+namespace NegotisService.UseCase.$Categoria
+{
+    public class EliminarDependencias$NombrePadreUseCase : IEliminarDependencias$NombrePadreUseCase
+    {
+        $VarDec
+
+
+        public EliminarDependencias$NombrePadreUseCase($ParamDec)
+        {
+            $VarParam
+        }
+
+        public bool Execute(IdModelWithHistory<$Tipo> model)
+        {
+            if (model.IsOnHistory(typeof(NegotisPersistence.Entity.$NombrePadre), model.Id.ToString()))
+                return true;
+
+            model.AddToHistory(typeof(NegotisPersistence.Entity.$NombrePadre), model.Id.ToString());
+
+            $DeleteHijos
+
+            var entity = _$NombreMinusculasService.FindById(model.Id);
+            if (entity != null)
+                _$NombreMinusculasService.Delete(entity);
+
+            return true;
+        }
+    }
+}

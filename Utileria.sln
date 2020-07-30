@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtileriaFramework", "Utiler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasteAsXml", "PasteAsXml\PasteAsXml.csproj", "{754C589D-9E16-4A3B-91E9-EECB5D02B255}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{05533CB4-DCAD-4800-8ABB-96F120098F2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{754C589D-9E16-4A3B-91E9-EECB5D02B255}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{754C589D-9E16-4A3B-91E9-EECB5D02B255}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{754C589D-9E16-4A3B-91E9-EECB5D02B255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05533CB4-DCAD-4800-8ABB-96F120098F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05533CB4-DCAD-4800-8ABB-96F120098F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05533CB4-DCAD-4800-8ABB-96F120098F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05533CB4-DCAD-4800-8ABB-96F120098F2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
